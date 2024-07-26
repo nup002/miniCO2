@@ -1,24 +1,136 @@
-(footprint "LS75C2D-T" (version 20221018) (generator pcbnew)
-  (layer "F.Cu")
-  (attr through_hole)
-  (fp_text reference "REF**" (at 3.9 -1.05 unlocked) (layer "F.SilkS")
-      (effects (font (size 1 1) (thickness 0.1)))
-    (tstamp cab2da45-7be2-4aa7-a180-80b000aff16f)
-  )
-  (fp_text value "LS75C2D-T" (at 5.25 -2.85 unlocked) (layer "F.Fab")
-      (effects (font (size 1 1) (thickness 0.15)))
-    (tstamp 11278ebe-d694-48c8-9fee-6f31ceebeea3)
-  )
-  (fp_text user "${REFERENCE}" (at -0.05 1.9 unlocked) (layer "F.Fab")
-      (effects (font (size 1 1) (thickness 0.15)))
-    (tstamp 9ed53157-35b5-41b6-b013-779e5c3cce71)
-  )
-  (fp_rect (start -1.4 -0.95) (end 1.4 0.95)
-    (stroke (width 0.1) (type default)) (fill none) (layer "Dwgs.User") (tstamp ace9ca61-5cd8-419b-b143-eb699b39eb1b))
-  (fp_circle (center 0 0) (end 0.35 -0.2)
-    (stroke (width 0.1) (type default)) (fill none) (layer "Dwgs.User") (tstamp cd53fe27-b8c7-42a7-bd32-7fc2a656dd02))
-  (pad "1" smd rect (at -1.31 -0.58) (size 0.48 0.57) (layers "F.Cu" "F.Paste" "F.Mask") (tstamp 919747d8-d828-4b82-bf4a-f475bc5cefa4))
-  (pad "1" smd rect (at 1.31 -0.58) (size 0.48 0.57) (layers "F.Cu" "F.Paste" "F.Mask") (tstamp 55166c78-fd18-445f-be3d-24e86f24760d))
-  (pad "2" smd rect (at -1.31 0.58) (size 0.48 0.57) (layers "F.Cu" "F.Paste" "F.Mask") (tstamp 91ba09b7-d6ec-49d0-9d79-1adf6c28783c))
-  (pad "2" smd rect (at 1.31 0.58) (size 0.48 0.57) (layers "F.Cu" "F.Paste" "F.Mask") (tstamp da142a07-79b5-418a-bda9-be77a4145a11))
+(footprint "LS75C2D-T"
+	(version 20240108)
+	(generator "pcbnew")
+	(generator_version "8.0")
+	(layer "F.Cu")
+	(property "Reference" "REF**"
+		(at 3.9 -1.05 0)
+		(unlocked yes)
+		(layer "F.SilkS")
+		(uuid "cab2da45-7be2-4aa7-a180-80b000aff16f")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.1)
+			)
+		)
+	)
+	(property "Value" "LS75C2D-T"
+		(at 5.25 -2.85 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(uuid "11278ebe-d694-48c8-9fee-6f31ceebeea3")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Footprint" ""
+		(at 0 0 0)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "d78de7a4-8bf3-4432-99ed-0952e12ec55b")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Datasheet" ""
+		(at 0 0 0)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "7d1d19a1-e14e-432d-a909-9d9f0e9d700b")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Description" ""
+		(at 0 0 0)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "e0e2ab95-b8a2-4dae-8131-ec27eb525b71")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.15)
+			)
+		)
+	)
+	(attr through_hole)
+	(fp_rect
+		(start -1.4 -0.95)
+		(end 1.4 0.95)
+		(stroke
+			(width 0.1)
+			(type default)
+		)
+		(fill none)
+		(layer "Dwgs.User")
+		(uuid "ace9ca61-5cd8-419b-b143-eb699b39eb1b")
+	)
+	(fp_circle
+		(center 0 0)
+		(end 0.35 -0.2)
+		(stroke
+			(width 0.1)
+			(type default)
+		)
+		(fill none)
+		(layer "Dwgs.User")
+		(uuid "cd53fe27-b8c7-42a7-bd32-7fc2a656dd02")
+	)
+	(fp_text user "${REFERENCE}"
+		(at -0.05 1.9 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(uuid "9ed53157-35b5-41b6-b013-779e5c3cce71")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(pad "1" smd rect
+		(at -1.31 -0.58)
+		(size 0.48 0.57)
+		(layers "F.Cu" "F.Paste" "F.Mask")
+		(uuid "919747d8-d828-4b82-bf4a-f475bc5cefa4")
+	)
+	(pad "1" smd rect
+		(at 1.31 -0.58)
+		(size 0.48 0.57)
+		(layers "F.Cu" "F.Paste" "F.Mask")
+		(uuid "55166c78-fd18-445f-be3d-24e86f24760d")
+	)
+	(pad "2" smd rect
+		(at -1.31 0.58)
+		(size 0.48 0.57)
+		(layers "F.Cu" "F.Paste" "F.Mask")
+		(uuid "91ba09b7-d6ec-49d0-9d79-1adf6c28783c")
+	)
+	(pad "2" smd rect
+		(at 1.31 0.58)
+		(size 0.48 0.57)
+		(layers "F.Cu" "F.Paste" "F.Mask")
+		(uuid "da142a07-79b5-418a-bda9-be77a4145a11")
+	)
+	(model "C:/Users/magla/Documents/Repositories/miniCO2/hardware/pcb/models/PANASONIC_EVPAF7B70.STEP"
+		(offset
+			(xyz 0 0 0)
+		)
+		(scale
+			(xyz 0.83 0.75 1)
+		)
+		(rotate
+			(xyz 0 0 0)
+		)
+	)
 )

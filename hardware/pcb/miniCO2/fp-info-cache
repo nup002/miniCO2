@@ -1,4 +1,4 @@
-23750418681638342
+23752140871961746
 Audio_Module
 Reverb_BTDR-1H
 Digital Reverberation Unit, http://www.belton.co.kr/inc/downfile.php?seq=17&file=pdf (footprint from http://www.uk-electronic.de/PDF/BTDR-1.pdf)
@@ -96655,6 +96655,13 @@ QFN NoLead
 0
 42
 33
+miniCO2
+SWD_pogo_pads
+
+
+0
+4
+4
 miniCO2
 Sensirion_SCD4x-1EP_10.1x10.1mm_P1.25mm_EP4.8x4.8mm
 Sensirion SCD4x QFN, 20 Pin (https://sensirion.com/media/documents/C4B87CE6/627C2DCD/CD_DS_SCD40_SCD41_Datasheet_D1.pdf), generated with kicad-footprint-generator ipc_noLead_generator.py
