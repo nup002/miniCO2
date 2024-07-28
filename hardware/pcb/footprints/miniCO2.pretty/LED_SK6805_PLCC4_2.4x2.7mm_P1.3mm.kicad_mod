@@ -244,18 +244,7 @@
 		(layers "F.Cu" "F.Paste" "F.Mask")
 		(uuid "0ca234e2-17f7-41b0-bdc8-8e2afae7919f")
 	)
-	(model "${KICAD8_3DMODEL_DIR}/LED_SMD.3dshapes/LED_SK6805_PLCC4_2.4x2.7mm_P1.3mm.wrl"
-		(offset
-			(xyz 0 0 0)
-		)
-		(scale
-			(xyz 1 1 1)
-		)
-		(rotate
-			(xyz 0 0 0)
-		)
-	)
-	(model "C:/Users/magla/Documents/Repositories/miniCO2/hardware/pcb/models/SK6805-2.4x2.7.step"
+	(model "${KICAD_MINICO2}/hardware/pcb/models/SK6805-2.4x2.7.step"
 		(offset
 			(xyz 0 0 0)
 		)

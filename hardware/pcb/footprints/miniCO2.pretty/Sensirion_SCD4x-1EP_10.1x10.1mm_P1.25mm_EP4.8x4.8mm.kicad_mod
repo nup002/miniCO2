@@ -436,19 +436,7 @@
 		(zone_connect 2)
 		(uuid "06be8d67-b77f-4f12-8346-3a21445d3d9a")
 	)
-	(model "${KICAD8_3DMODEL_DIR}/Sensor.3dshapes/Sensirion_SCD4x-1EP_10.1x10.1mm_P1.25mm_EP4.8x4.8mm.wrl"
-		(hide yes)
-		(offset
-			(xyz 0 0 0)
-		)
-		(scale
-			(xyz 1 1 1)
-		)
-		(rotate
-			(xyz 0 0 0)
-		)
-	)
-	(model "C:/Users/magla/Documents/Repositories/miniCO2/hardware/pcb/models/Sensirion_CO2_Sensors_SCD4x_STEP_file.step"
+	(model "${KICAD_MINICO2}/hardware/pcb/models/Sensirion_CO2_Sensors_SCD4x_STEP_file.step"
 		(offset
 			(xyz 0 0 0.8)
 		)

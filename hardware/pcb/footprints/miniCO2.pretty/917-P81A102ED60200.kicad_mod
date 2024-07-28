@@ -159,7 +159,7 @@
 		(remove_unused_layers no)
 		(uuid "a5afcb52-b75e-41cc-944d-587253cf0cb4")
 	)
-	(model "C:/Users/magla/Documents/Repositories/miniCO2/hardware/pcb/models/a-usb_a-lp-c.stp"
+	(model "${KICAD_MINICO2}/hardware/pcb/models/a-usb_a-lp-c.stp"
 		(offset
 			(xyz 0 17.7 -1.6)
 		)

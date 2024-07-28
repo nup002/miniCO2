@@ -1,4 +1,4 @@
-23752140871961746
+23752142209916700
 Audio_Module
 Reverb_BTDR-1H
 Digital Reverberation Unit, http://www.belton.co.kr/inc/downfile.php?seq=17&file=pdf (footprint from http://www.uk-electronic.de/PDF/BTDR-1.pdf)
@@ -64651,6 +64651,48 @@ Yellow 5381 Series LED
 0
 2
 2
+MiniCO2
+917-P81A102ED60200
+
+
+0
+6
+5
+MiniCO2
+LED_SK6805_PLCC4_2.4x2.7mm_P1.3mm
+https://cdn-shop.adafruit.com/product-files/3484/3484_Datasheet.pdf
+LED RGB NeoPixel Nano PLCC-4
+0
+4
+4
+MiniCO2
+LS75C2D-T
+
+
+0
+4
+2
+MiniCO2
+QFN-32-1EP_5x5mm_P0.5mm_EP3.6x3.6mm
+QFN, 32 Pin (http://infocenter.nordicsemi.com/pdf/nRF52810_PS_v1.1.pdf#page=468), generated with kicad-footprint-generator ipc_noLead_generator.py
+QFN NoLead
+0
+42
+33
+MiniCO2
+SWD_pogo_pads
+
+
+0
+4
+4
+MiniCO2
+Sensirion_SCD4x-1EP_10.1x10.1mm_P1.25mm_EP4.8x4.8mm
+Sensirion SCD4x QFN, 20 Pin (https://sensirion.com/media/documents/C4B87CE6/627C2DCD/CD_DS_SCD40_SCD41_Datasheet_D1.pdf), generated with kicad-footprint-generator ipc_noLead_generator.py
+Sensirion QFN NoLead
+0
+25
+21
 Module
 A20_OLINUXINO_LIME2
 A20 Olinuxino LIME2, 1.2GHz, 512-1024MB RAM, Micro-SD, NAND or eMMC, 1000Mbit Ethernet
@@ -96627,45 +96669,3 @@ Varistor VF
 0
 2
 2
-miniCO2
-917-P81A102ED60200
-
-
-0
-6
-5
-miniCO2
-LED_SK6805_PLCC4_2.4x2.7mm_P1.3mm
-https://cdn-shop.adafruit.com/product-files/3484/3484_Datasheet.pdf
-LED RGB NeoPixel Nano PLCC-4
-0
-4
-4
-miniCO2
-LS75C2D-T
-
-
-0
-4
-2
-miniCO2
-QFN-32-1EP_5x5mm_P0.5mm_EP3.6x3.6mm
-QFN, 32 Pin (http://infocenter.nordicsemi.com/pdf/nRF52810_PS_v1.1.pdf#page=468), generated with kicad-footprint-generator ipc_noLead_generator.py
-QFN NoLead
-0
-42
-33
-miniCO2
-SWD_pogo_pads
-
-
-0
-4
-4
-miniCO2
-Sensirion_SCD4x-1EP_10.1x10.1mm_P1.25mm_EP4.8x4.8mm
-Sensirion SCD4x QFN, 20 Pin (https://sensirion.com/media/documents/C4B87CE6/627C2DCD/CD_DS_SCD40_SCD41_Datasheet_D1.pdf), generated with kicad-footprint-generator ipc_noLead_generator.py
-Sensirion QFN NoLead
-0
-25
-21

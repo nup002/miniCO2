@@ -122,7 +122,7 @@
 		(layers "F.Cu" "F.Paste" "F.Mask")
 		(uuid "da142a07-79b5-418a-bda9-be77a4145a11")
 	)
-	(model "C:/Users/magla/Documents/Repositories/miniCO2/hardware/pcb/models/PANASONIC_EVPAF7B70.STEP"
+	(model "${KICAD_MINICO2}/hardware/pcb/models/PANASONIC_EVPAF7B70.STEP"
 		(offset
 			(xyz 0 0 0)
 		)

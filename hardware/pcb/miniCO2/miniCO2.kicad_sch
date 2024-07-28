@@ -3646,7 +3646,7 @@
 				)
 			)
 		)
-		(property "Footprint" "miniCO2:LED_SK6805_PLCC4_2.4x2.7mm_P1.3mm"
+		(property "Footprint" "MiniCO2:LED_SK6805_PLCC4_2.4x2.7mm_P1.3mm"
 			(at 251.46 104.14 0)
 			(effects
 				(font
@@ -3733,7 +3733,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Connector_PinHeader_1.00mm:PinHeader_1x04_P1.00mm_Vertical"
+		(property "Footprint" "MiniCO2:SWD_pogo_pads"
 			(at 261.62 129.54 0)
 			(effects
 				(font
@@ -4297,7 +4297,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "miniCO2:QFN-32-1EP_5x5mm_P0.5mm_EP3.6x3.6mm"
+		(property "Footprint" "MiniCO2:QFN-32-1EP_5x5mm_P0.5mm_EP3.6x3.6mm"
 			(at 165.1 133.35 0)
 			(effects
 				(font
@@ -4324,7 +4324,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part #" "C614310"
+		(property "LCSC Part #" "C2052801"
 			(at 130.81 86.36 0)
 			(effects
 				(font
@@ -4889,7 +4889,7 @@
 				)
 			)
 		)
-		(property "Footprint" "miniCO2:917-P81A102ED60200"
+		(property "Footprint" "MiniCO2:917-P81A102ED60200"
 			(at 264.16 30.48 0)
 			(effects
 				(font
@@ -5129,7 +5129,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "miniCO2:Sensirion_SCD4x-1EP_10.1x10.1mm_P1.25mm_EP4.8x4.8mm"
+		(property "Footprint" "MiniCO2:Sensirion_SCD4x-1EP_10.1x10.1mm_P1.25mm_EP4.8x4.8mm"
 			(at 260.35 64.77 0)
 			(effects
 				(font
@@ -5221,7 +5221,7 @@
 				)
 			)
 		)
-		(property "Footprint" "miniCO2:LS75C2D-T"
+		(property "Footprint" "MiniCO2:LS75C2D-T"
 			(at 104.14 130.81 0)
 			(effects
 				(font
@@ -5298,7 +5298,7 @@
 				)
 			)
 		)
-		(property "Footprint" "miniCO2:LED_SK6805_PLCC4_2.4x2.7mm_P1.3mm"
+		(property "Footprint" "MiniCO2:LED_SK6805_PLCC4_2.4x2.7mm_P1.3mm"
 			(at 270.51 104.14 0)
 			(effects
 				(font
