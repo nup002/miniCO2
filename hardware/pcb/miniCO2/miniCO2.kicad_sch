@@ -2495,10 +2495,6 @@
 		(uuid "d646e694-2297-4638-8988-ba41d2fdf35e")
 	)
 	(no_connect
-		(at 276.86 96.52)
-		(uuid "e79bbd54-372a-4181-ad8e-59c5937179dc")
-	)
-	(no_connect
 		(at 113.03 60.96)
 		(uuid "e9e787c9-bbf9-453f-adee-bcccd42ac185")
 	)
@@ -2543,16 +2539,6 @@
 			(type default)
 		)
 		(uuid "0e3fd0cd-825e-48d1-9e38-571b5d3f792e")
-	)
-	(wire
-		(pts
-			(xy 257.81 96.52) (xy 261.62 96.52)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "15ad86c1-f8d6-490b-8374-e467d50b7617")
 	)
 	(wire
 		(pts
@@ -2706,6 +2692,16 @@
 	)
 	(wire
 		(pts
+			(xy 267.97 104.14) (xy 267.97 106.68)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "76c9612f-5eb5-4ef5-a3cc-8bba8b43d633")
+	)
+	(wire
+		(pts
 			(xy 252.73 134.62) (xy 256.54 134.62)
 		)
 		(stroke
@@ -2856,6 +2852,16 @@
 	)
 	(wire
 		(pts
+			(xy 257.81 96.52) (xy 260.35 96.52)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "d64b513a-2c63-4562-8e43-798cf5f3d2e9")
+	)
+	(wire
+		(pts
 			(xy 233.68 26.67) (xy 243.84 26.67)
 		)
 		(stroke
@@ -2916,6 +2922,16 @@
 	)
 	(wire
 		(pts
+			(xy 267.97 87.63) (xy 267.97 88.9)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e4c14222-5254-42e6-ba17-709a38c92e65")
+	)
+	(wire
+		(pts
 			(xy 267.97 29.21) (xy 273.05 29.21)
 		)
 		(stroke
@@ -2956,16 +2972,6 @@
 	)
 	(wire
 		(pts
-			(xy 269.24 104.14) (xy 269.24 106.68)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "eb95ddae-86a7-433f-804c-62df72980cc5")
-	)
-	(wire
-		(pts
 			(xy 267.97 31.75) (xy 273.05 31.75)
 		)
 		(stroke
@@ -2973,16 +2979,6 @@
 			(type default)
 		)
 		(uuid "ec5e2d0f-5d4f-43f6-ab46-ad9127a9baec")
-	)
-	(wire
-		(pts
-			(xy 269.24 87.63) (xy 269.24 88.9)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "f0c706d5-039b-43b7-822e-7b4b6f81a44b")
 	)
 	(wire
 		(pts
@@ -3628,25 +3624,24 @@
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(fields_autoplaced yes)
 		(uuid "248fb465-14a7-4569-84b2-b1a3895cb385")
 		(property "Reference" "D1"
-			(at 260.35 92.8721 0)
+			(at 254.508 85.598 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 			)
 		)
-		(property "Value" "SK6805"
-			(at 260.35 95.4121 0)
+		(property "Value" "WS2812C-4020"
+			(at 260.35 88.646 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 			)
 		)
-		(property "Footprint" "MiniCO2:LED_SK6805_PLCC4_2.4x2.7mm_P1.3mm"
+		(property "Footprint" "MiniCO2:WS2812C-4020"
 			(at 251.46 104.14 0)
 			(effects
 				(font
@@ -3656,7 +3651,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "https://cdn-shop.adafruit.com/product-files/3484/3484_Datasheet.pdf"
+		(property "Datasheet" ""
 			(at 252.73 106.045 0)
 			(effects
 				(font
@@ -3675,7 +3670,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part #" "C2909056"
+		(property "LCSC Part #" "C5149201"
 			(at 250.19 96.52 0)
 			(effects
 				(font
@@ -3915,7 +3910,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part #" "C2167716"
+		(property "LCSC Part #" "C19702"
 			(at 233.68 30.48 0)
 			(effects
 				(font
@@ -4509,72 +4504,6 @@
 	)
 	(symbol
 		(lib_id "power:+3.3V")
-		(at 269.24 87.63 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "72f04f71-6654-4c76-879d-27ab4a5d861c")
-		(property "Reference" "#PWR012"
-			(at 269.24 91.44 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "+3.3V"
-			(at 269.24 82.55 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 269.24 87.63 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 269.24 87.63 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 269.24 87.63 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "cd2fec8a-a124-4021-b7b4-c1bbadfd0674")
-		)
-		(instances
-			(project "miniCO2"
-				(path "/4716ccc0-88a0-4c42-87c9-ed1e02729e90"
-					(reference "#PWR012")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:+3.3V")
 		(at 252.73 127 0)
 		(unit 1)
 		(exclude_from_sim no)
@@ -4839,7 +4768,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part #" "C2167716"
+		(property "LCSC Part #" "C19702"
 			(at 207.01 30.48 0)
 			(effects
 				(font
@@ -4944,6 +4873,72 @@
 			(project "miniCO2"
 				(path "/4716ccc0-88a0-4c42-87c9-ed1e02729e90"
 					(reference "J1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:+3.3V")
+		(at 267.97 87.63 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "b492184d-dd16-4009-a43b-84c143837fec")
+		(property "Reference" "#PWR012"
+			(at 267.97 91.44 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "+3.3V"
+			(at 267.97 82.55 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 267.97 87.63 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 267.97 87.63 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 267.97 87.63 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "12b58bae-e36e-426c-b5e8-79db9343cb10")
+		)
+		(instances
+			(project "miniCO2"
+				(path "/4716ccc0-88a0-4c42-87c9-ed1e02729e90"
+					(reference "#PWR012")
 					(unit 1)
 				)
 			)
@@ -5102,6 +5097,72 @@
 		)
 	)
 	(symbol
+		(lib_id "power:GND")
+		(at 267.97 106.68 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "c90025fc-acfe-403e-aa72-dad2b6ff05a7")
+		(property "Reference" "#PWR013"
+			(at 267.97 113.03 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 267.97 111.76 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 267.97 106.68 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 267.97 106.68 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 267.97 106.68 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "984a3747-7c7a-4232-9e92-86f4c08e3095")
+		)
+		(instances
+			(project "miniCO2"
+				(path "/4716ccc0-88a0-4c42-87c9-ed1e02729e90"
+					(reference "#PWR013")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Sensor_Gas:SCD40-D-R2")
 		(at 260.35 64.77 0)
 		(unit 1)
@@ -5196,6 +5257,90 @@
 		)
 	)
 	(symbol
+		(lib_id "LED:SK6805")
+		(at 267.97 96.52 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "ebd0a689-30e8-430f-97b9-06fdb9a7070b")
+		(property "Reference" "D2"
+			(at 272.288 85.598 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "WS2812C-4020"
+			(at 278.13 88.646 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "MiniCO2:WS2812C-4020"
+			(at 269.24 104.14 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 270.51 106.045 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 267.97 96.52 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC Part #" "C5149201"
+			(at 267.97 96.52 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "3"
+			(uuid "b3b786e1-a48b-42b7-80b4-98b16d1db5a2")
+		)
+		(pin "1"
+			(uuid "f8486a99-dcc3-43ab-aa33-d5c23361ba7c")
+		)
+		(pin "4"
+			(uuid "02e5813b-739e-4eb3-b294-7f5fbad5b445")
+		)
+		(pin "2"
+			(uuid "041cd6e9-df04-45d1-aba1-e9cda44e2751")
+		)
+		(instances
+			(project "miniCO2"
+				(path "/4716ccc0-88a0-4c42-87c9-ed1e02729e90"
+					(reference "D2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Switch:SW_Push")
 		(at 104.14 135.89 0)
 		(unit 1)
@@ -5267,157 +5412,6 @@
 			(project "miniCO2"
 				(path "/4716ccc0-88a0-4c42-87c9-ed1e02729e90"
 					(reference "SW1")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "LED:SK6805")
-		(at 269.24 96.52 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "f2fc09cb-a17f-4be4-b844-5849936cabfe")
-		(property "Reference" "D2"
-			(at 279.4 92.8721 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "SK6805"
-			(at 279.4 95.4121 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "MiniCO2:LED_SK6805_PLCC4_2.4x2.7mm_P1.3mm"
-			(at 270.51 104.14 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left top)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "https://cdn-shop.adafruit.com/product-files/3484/3484_Datasheet.pdf"
-			(at 271.78 106.045 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left top)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 269.24 96.52 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LCSC Part #" "C2909056"
-			(at 269.24 96.52 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "3"
-			(uuid "4e6a7d72-c326-468c-bbef-c4bdfe77c297")
-		)
-		(pin "1"
-			(uuid "82cf3b24-15df-4107-9066-d4016a873943")
-		)
-		(pin "4"
-			(uuid "c8109b43-c055-4322-bc93-ace4964dc674")
-		)
-		(pin "2"
-			(uuid "a21068c5-4075-41f8-bdb8-4c99b6b6d3cf")
-		)
-		(instances
-			(project "miniCO2"
-				(path "/4716ccc0-88a0-4c42-87c9-ed1e02729e90"
-					(reference "D2")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:GND")
-		(at 269.24 106.68 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "f9c84395-4107-4b0c-a7c3-ba1cfe0f39e3")
-		(property "Reference" "#PWR013"
-			(at 269.24 113.03 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "GND"
-			(at 269.24 111.76 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 269.24 106.68 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 269.24 106.68 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 269.24 106.68 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "dea8c524-10dc-4c9a-90df-3ac21cd4524e")
-		)
-		(instances
-			(project "miniCO2"
-				(path "/4716ccc0-88a0-4c42-87c9-ed1e02729e90"
-					(reference "#PWR013")
 					(unit 1)
 				)
 			)
