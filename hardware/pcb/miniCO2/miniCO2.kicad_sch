@@ -3670,7 +3670,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part #" "C5149201"
+		(property "LCSC Part #" "C4154870"
 			(at 250.19 96.52 0)
 			(effects
 				(font
@@ -4283,7 +4283,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "ATSAMD21E18A-M"
+		(property "Value" "ATSAMD21E17A-MUT"
 			(at 147.32 87.63 0)
 			(effects
 				(font
@@ -4319,7 +4319,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part #" "C2052801"
+		(property "LCSC Part #" "3A991A2"
 			(at 130.81 86.36 0)
 			(effects
 				(font
@@ -4845,7 +4845,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part #" "C2763086"
+		(property "LCSC Part #" " C2763083"
 			(at 260.35 29.21 0)
 			(effects
 				(font
@@ -5310,7 +5310,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part #" "C5149201"
+		(property "LCSC Part #" "C4154870"
 			(at 267.97 96.52 0)
 			(effects
 				(font

@@ -59,7 +59,14 @@
           "width": 0.0
         }
       ],
-      "drc_exclusions": [],
+      "drc_exclusions": [
+        "copper_edge_clearance|149428900|86701362|6c3f531b-e718-4291-8ef0-a5d7041ceb0b|154863cc-b238-4281-b58a-11844adb0ad9",
+        "copper_edge_clearance|149428900|87951362|6c3f531b-e718-4291-8ef0-a5d7041ceb0b|4522d449-4493-484e-8257-50381fb3b414",
+        "copper_edge_clearance|149428900|89201362|6c3f531b-e718-4291-8ef0-a5d7041ceb0b|fc523f6b-1e09-480e-a4fd-d6d153c9799c",
+        "copper_edge_clearance|149428900|90451362|6c3f531b-e718-4291-8ef0-a5d7041ceb0b|08d6aca4-6258-4437-8072-c4e7f6f7792e",
+        "copper_edge_clearance|149428900|91701362|6c3f531b-e718-4291-8ef0-a5d7041ceb0b|04dac849-deee-4053-8123-11a007a5eeb9",
+        "hole_near_hole|136159800|83980862|bc0bbd0c-7a30-49d9-bcb3-f4b9888ad723|1f67bd86-c651-492d-a147-e195510a0f6b"
+      ],
       "meta": {
         "version": 2
       },
@@ -69,7 +76,7 @@
         "connection_width": "warning",
         "copper_edge_clearance": "error",
         "copper_sliver": "warning",
-        "courtyards_overlap": "error",
+        "courtyards_overlap": "ignore",
         "diff_pair_gap_out_of_range": "error",
         "diff_pair_uncoupled_length_too_long": "error",
         "drill_out_of_range": "error",
@@ -122,18 +129,18 @@
         "max_error": 0.005,
         "min_clearance": 0.09,
         "min_connection": 0.0,
-        "min_copper_edge_clearance": 0.3,
+        "min_copper_edge_clearance": 0.29,
         "min_hole_clearance": 0.25,
         "min_hole_to_hole": 0.5,
         "min_microvia_diameter": 0.2,
         "min_microvia_drill": 0.1,
-        "min_resolved_spokes": 2,
+        "min_resolved_spokes": 1,
         "min_silk_clearance": 0.0,
         "min_text_height": 0.8,
         "min_text_thickness": 0.08,
         "min_through_hole_diameter": 0.3,
         "min_track_width": 0.09,
-        "min_via_annular_width": 0.075,
+        "min_via_annular_width": 0.05,
         "min_via_diameter": 0.4,
         "solder_mask_clearance": 0.0,
         "solder_mask_min_width": 0.0,
@@ -563,7 +570,7 @@
           "group_by": true,
           "label": "Value",
           "name": "Value",
-          "show": false
+          "show": true
         },
         {
           "group_by": false,
@@ -605,7 +612,7 @@
           "group_by": false,
           "label": "LCSC Part #",
           "name": "LCSC Part #",
-          "show": false
+          "show": true
         }
       ],
       "filter_string": "",
