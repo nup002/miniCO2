@@ -8,9 +8,9 @@ amount of CO2 in the air. The default levels can be adjusted via software to sui
 </p>
  
 ## Compatibility
-The MiniCO2 works with any standard USB type A port that can supply power. That means it can be plugged in nearly 
-anywhere: Laptops, displays, chargers, battery banks. 
-
+The MiniCO2 works with any standard USB type A port that can supply power. It can therefore be plugged in nearly 
+anywhere: Laptops, displays, chargers, battery banks, etc. You can for example plug it into the USB port of a 
+airplane seat to monitor the cabin air quality.
 
 ## Repo status
 The repository is a work in progress. Currently, only the KiCAD design files are provided. I intend to add:
