@@ -1,1 +1,75 @@
-hardware/pcb/miniCO2/miniCO2-backups/
+# Backup files
+*.bak
+
+# Zip files
+*.zip
+
+# Compilation folder
+firmware/compiled/
+
+# Kicad backups
+hardware/pcb/Mathboard-backups/
+
+# Lock files
+*.lck
+
+# Pycharm .idea folder
+.idea/
+
+# Docs build folder
+docs/_build
+
+#Visual studio code folder
+firmware/.vscode
+
+# Prerequisites
+*.d
+
+# Object files
+*.o
+*.ko
+*.obj
+*.elf
+
+# Linker output
+*.ilk
+*.map
+*.exp
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Libraries
+*.lib
+*.a
+*.la
+*.lo
+
+# Shared objects (inc. Windows DLLs)
+*.dll
+*.so
+*.so.*
+*.dylib
+
+# Executables
+*.exe
+*.out
+*.app
+*.i*86
+*.x86_64
+
+# Debug files
+*.dSYM/
+*.su
+*.idb
+*.pdb
+
+# Kernel Module Compile Results
+*.mod*
+*.cmd
+.tmp_versions/
+modules.order
+Module.symvers
+Mkfile.old
+dkms.conf
