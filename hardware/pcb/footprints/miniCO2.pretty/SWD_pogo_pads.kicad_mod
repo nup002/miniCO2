@@ -103,4 +103,10 @@
 		(layers "F.Cu" "F.Paste" "F.Mask")
 		(uuid "556bf81b-41b7-41a8-9b25-aba25e5518ff")
 	)
+	(pad "5" smd circle
+		(at 0 10.1)
+		(size 1.2 1.2)
+		(layers "F.Cu" "F.Paste" "F.Mask")
+		(uuid "8980c781-f959-4518-a17c-e048010d7679")
+	)
 )

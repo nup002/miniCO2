@@ -7,18 +7,26 @@ amount of CO2 in the air. The default levels can be adjusted to suit your needs.
 <img src="docs/src/images/v1_top_pcb.jpg" width="300">
 </div>
 
-## Compatibility
-The MiniCO2 works with any standard USB type A port that can supply power. That means it can be plugged in nearly 
-anywhere: Laptops, displays, chargers, battery banks. 
+The image above is of a prototype. The final version will have a USB-C connector and wireless connectivity. 
 
+## I want one!
+The MiniCO2 is under development and cannot be purchased yet. But you can register your interest by adding your email
+to the bottom of this form: https://docs.google.com/forms/d/e/1FAIpQLSczLEsP1Wsz9qHPjULFHvHtzbTa30NaE-r1zrS9D4k2iNyR5Q/viewform?usp=sf_link
+
+Once finished, the MiniCO2 will be available for purchase on Tindie.
 
 ## Repo status
-The repository is a work in progress. Currently, only the KiCAD design files are provided. I intend to add:
- - Production files optimized for JLCPCB
+The repository is an active work in progress. Currently, only the KiCAD design files are provided. I intend to add:
  - CAD files for a 3D-printable enclosure
  - Firmware
  - Control application
  - Python example snippets on how to receive data
+
+
+## Compatibility
+The MiniCO2 will work with any standard USB type C port that can supply power. That means it can be plugged in nearly 
+anywhere: Laptops, displays, chargers, battery banks, etc. It will also have wireless connectivity thanks to an 
+ESP32-C6 module. This provides Wi-Fi, Bluetooth, Bluetooth Low Power, Thread, and Zigbee.
 
 ## Licenses
 The MiniCO2 firmware is licensed under the GNU General Public License v3. The MiniCO2 hardware is licensed under 

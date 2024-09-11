@@ -1,0 +1,158 @@
+(footprint "SiT1552CSP_0.84x1.54"
+	(version 20240108)
+	(generator "pcbnew")
+	(generator_version "8.0")
+	(layer "F.Cu")
+	(property "Reference" "REF**"
+		(at 9.398 -7.112 0)
+		(unlocked yes)
+		(layer "F.SilkS")
+		(uuid "ffc3468e-464d-4cdf-bf7a-5c7dc1eab113")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.1)
+			)
+		)
+	)
+	(property "Value" "SiT1552CSP_0.84x1.54"
+		(at -9.906 -10.16 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(uuid "02042dd8-c49e-488d-b087-4bd5bf053350")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Footprint" ""
+		(at 0 0 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "b637b3f7-0353-4273-8072-06d2ff7e4ffd")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Datasheet" ""
+		(at 0 0 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "d35133a6-2487-47fc-845a-0f10c8963e09")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Description" ""
+		(at 0 0 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "92e3da42-6038-4b56-a89c-ef72a0bb2449")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(attr smd)
+	(fp_line
+		(start -0.55 -0.9)
+		(end -0.55 -0.7)
+		(stroke
+			(width 0.1)
+			(type default)
+		)
+		(layer "F.SilkS")
+		(uuid "5da755d0-d6f6-4a02-b5a4-03a37b5591ff")
+	)
+	(fp_line
+		(start -0.55 -0.9)
+		(end -0.35 -0.9)
+		(stroke
+			(width 0.1)
+			(type default)
+		)
+		(layer "F.SilkS")
+		(uuid "fd653ea1-3b7d-45e5-a0c9-ce52c58d7580")
+	)
+	(fp_line
+		(start -0.35 -0.9)
+		(end -0.5 -0.9)
+		(stroke
+			(width 0.1)
+			(type default)
+		)
+		(layer "F.SilkS")
+		(uuid "9779719c-7648-4460-9cd5-d193a74f375d")
+	)
+	(fp_rect
+		(start -0.42 -0.77)
+		(end 0.42 0.77)
+		(stroke
+			(width 0.05)
+			(type default)
+		)
+		(fill none)
+		(layer "Dwgs.User")
+		(uuid "66e8150a-7213-45b9-8c42-b6af911460cc")
+	)
+	(fp_text user "${REFERENCE}"
+		(at -8.382 8.382 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(uuid "bd22e739-c1af-411e-a9da-4271f5494dc4")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(pad "1" smd circle
+		(at -0.205 -0.5)
+		(size 0.25 0.25)
+		(layers "F.Cu" "F.Paste" "F.Mask")
+		(uuid "906ff7cd-5a61-47eb-95c7-755d0b1e7f37")
+	)
+	(pad "2" smd circle
+		(at -0.205 0.5)
+		(size 0.25 0.25)
+		(layers "F.Cu" "F.Paste" "F.Mask")
+		(uuid "7931752d-a7e0-4e69-afdd-3992fd3351bb")
+	)
+	(pad "3" smd circle
+		(at 0.205 0.5)
+		(size 0.25 0.25)
+		(layers "F.Cu" "F.Paste" "F.Mask")
+		(uuid "c1596a32-0615-4d02-a402-5f0d3f552c61")
+	)
+	(pad "4" smd circle
+		(at 0.205 -0.5)
+		(size 0.25 0.25)
+		(layers "F.Cu" "F.Paste" "F.Mask")
+		(uuid "80722e5f-990c-47cf-8a1b-4bb7bc0179fc")
+	)
+	(model "${KICAD_MINICO2}/hardware/pcb/models/CSP_1508_4pins.stp"
+		(offset
+			(xyz 0 0 0.5)
+		)
+		(scale
+			(xyz 1 1 1)
+		)
+		(rotate
+			(xyz 90 0 180)
+		)
+	)
+)

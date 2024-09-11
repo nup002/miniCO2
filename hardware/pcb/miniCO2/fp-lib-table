@@ -1,4 +1,0 @@
-(fp_lib_table
-  (version 7)
-  (lib (name "MiniCO2")(type "KiCad")(uri "C:/Users/magla/Documents/Repositories/miniCO2/hardware/pcb/footprints/miniCO2.pretty")(options "")(descr ""))
-)
