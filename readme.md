@@ -2,10 +2,10 @@
 
 The MiniCO2 is a miniature USB-powered CO2 sensor that can be used 
 anywhere you need a simple indicator of CO2. Its built-in LEDs light up green, orange, or red, depending on the 
-amount of CO2 in the air. The default levels can be adjusted to suit your needs.
-<div style="text-align: center;">
+amount of CO2 in the air. The default levels can be adjusted via software to suit your needs.
+<p align="center">
 <img src="docs/src/images/v1_top_pcb.jpg" width="300">
-</div>
+</p>
 
 The image above is of a prototype. The final version will have a USB-C connector and wireless connectivity. 
 
@@ -21,7 +21,6 @@ The repository is an active work in progress. Currently, only the KiCAD design f
  - Firmware
  - Control application
  - Python example snippets on how to receive data
-
 
 ## Compatibility
 The MiniCO2 will work with any standard USB type C port that can supply power. That means it can be plugged in nearly 
