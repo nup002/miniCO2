@@ -527,7 +527,7 @@
       "plot": "Production/",
       "pos_files": "Production/",
       "specctra_dsn": "",
-      "step": "../../case/miniCO2.step",
+      "step": "../../../../../../Documents/miniCO2.step",
       "svg": "",
       "vrml": ""
     },

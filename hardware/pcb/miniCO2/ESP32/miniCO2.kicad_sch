@@ -4758,6 +4758,26 @@
 		)
 		(uuid "276864ae-4a36-4961-9fec-e47aa7f1151d")
 	)
+	(text "Pin 23 of internal QFN32"
+		(exclude_from_sim no)
+		(at 200.66 83.058 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "56b861d1-72a0-4055-8df1-7127feb73c88")
+	)
+	(text "Pin 25 of internal QFN32"
+		(exclude_from_sim no)
+		(at 200.406 88.138 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "766e2d5c-4006-41dc-8b61-d8c3141daadd")
+	)
 	(text "Checked"
 		(exclude_from_sim no)
 		(at 219.964 15.748 0)
@@ -4767,6 +4787,16 @@
 			)
 		)
 		(uuid "77471c5c-3bae-41b7-ae09-49fe9d668244")
+	)
+	(text "Pin 28 of internal QFN32"
+		(exclude_from_sim no)
+		(at 199.898 95.504 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "ec504619-5483-4f22-ae39-106dc1b06b8c")
 	)
 	(global_label "D-"
 		(shape input)
