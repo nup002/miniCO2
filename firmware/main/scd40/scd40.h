@@ -13,7 +13,7 @@ struct SCD40measurement{
     uint16_t co2;
     float temperature;
     float humidity;
-} xMeasurement;
+};
 
 esp_err_t init_scd40(void);
 

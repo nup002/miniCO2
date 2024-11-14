@@ -44,13 +44,8 @@ esp_err_t init_scd40(void)
 
 void scd40_task(void *pvParameters)
 {
-    // Init the queue
-    struct SCD40measurement meas;
-    QueueHandle_t queue = xQueueCreate(1, sizeof(meas));
-    if (queue == 0)
-    {
-        ESP_LOGE(TAG, "Failed at creating queue");
-    }
+    // Get the measurements queue from the pvParameters pointer
+    QueueHandle_t measurements_queue = (QueueHandle_t)pvParameters;
 
     // Init the sensor
     esp_err_t init_err = init_scd40();
@@ -60,7 +55,7 @@ void scd40_task(void *pvParameters)
         return;
     }
 
-
+    struct SCD40measurement meas;
     while (1)
     {
         vTaskDelay(pdMS_TO_TICKS(1000));
@@ -81,7 +76,7 @@ void scd40_task(void *pvParameters)
             continue;
         }
 
-        xQueueSendToBack(queue, &meas, (TickType_t)0)
+        xQueueSendToBack(measurements_queue, &meas, (TickType_t)0);
 
         // ESP_LOGI(TAG, "CO2: %u ppm", meas.co2);
         // ESP_LOGI(TAG, "Temperature: %.2f °C", meas.temperature);

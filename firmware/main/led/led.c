@@ -43,7 +43,11 @@ static void initiate_led(void)
     led_strip_clear(led_strip);
 }
 
-void led_task(void *pvParameters){
+void led_task(void *pvParameters)
+{
+    // Get the measurements queue from the pvParameters pointer
+    QueueHandle_t measurements_queue = (QueueHandle_t)pvParameters;
+
     esp_err_t led_init_err = initiate_led();
     if (!led_init_err){
         // Log the error and put MINICO2 into error state and return from the task

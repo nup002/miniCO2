@@ -15,6 +15,7 @@
 #include "esp_system.h"
 #include "scd4x.h"
 #include "scd40/scd40.h"
+#include "led/led.h"
 #include "global_constants.h"
 
 #ifndef APP_CPU_NUM
@@ -22,6 +23,7 @@
 #endif
 
 TaskHandle_t scd40_task_handle = NULL;
+TaskHandle_t led_task_handle = NULL;
 
 void boot(){
     // Tasks to take before anything else starts.
@@ -63,12 +65,15 @@ void app_main(void)
     
     // Init the sensor measurements queue
     struct SCD40measurement meas;
-    QueueHandle_t queue = xQueueCreate(1, sizeof((meas)));
-    if (queue == 0)
+    QueueHandle_t measurements_queue = xQueueCreate(1, sizeof((meas)));
+    if (measurements_queue == 0)
     {
-        ESP_LOGE(TAG, "Failed at creating queue");
+        ESP_LOGE(TAG, "Failed at creating measurements queue");
     }
 
     // Launch the SCD40 sensor reader task
-    xTaskCreate(scd40_task, "SCD40_task", configMINIMAL_STACK_SIZE * 8, NULL, 5, &scd40_task_handle);
+    xTaskCreate(scd40_task, "SCD40_task", configMINIMAL_STACK_SIZE * 8, (void*)measurements_queue, 5, &scd40_task_handle);
+
+    // Launch the LED controller task
+    //xTaskCreate(led_task, "LED_task", configMINIMAL_STACK_SIZE * 8, (void*)measurements_queue, 5, &led_task_handle);
 }
