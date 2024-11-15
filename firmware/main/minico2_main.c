@@ -18,15 +18,17 @@
 #include "types.h"
 #include "scd40/scd40.h"
 #include "led/led.h"
+#include "controller/controller.h"
 
 #ifndef APP_CPU_NUM
 #define APP_CPU_NUM PRO_CPU_NUM
 #endif
 
-static const char *TAG = "MINICO2";
+static const char *TAG = "main";
 
 TaskHandle_t scd40_task_handle = NULL;
 TaskHandle_t led_task_handle = NULL;
+TaskHandle_t controller_task_handle = NULL;
 
 void boot(){
     // Tasks to take before anything else starts.
@@ -64,19 +66,23 @@ void boot(){
 void app_main(void)
 {
     boot();  //Boot the MINICO2. Prints ESP32 chip info to the serial port.
-
     
-    // Init the sensor measurements queue
+    // Init the queues
     struct SCD40measurement meas;
-    QueueHandle_t measurements_queue = xQueueCreate(1, sizeof((meas)));
-    if (measurements_queue == 0)
-    {
-        ESP_LOGE(TAG, "Failed at creating measurements queue");
-    }
+    QueueHandle_t measurements_queue = xQueueCreate(1, sizeof(meas));
+    if (measurements_queue == 0){ESP_LOGE(TAG, "Failed at creating measurements queue");}
+
+    enum LED_STATES state;
+    QueueHandle_t led_state_queue = xQueueCreate(1, sizeof(state));
+    if (led_state_queue == 0){ESP_LOGE(TAG, "Failed at creating LED state queue");}
+
+    // Launch the controller task
+    QueueHandle_t controller_queues[] = {measurements_queue, led_state_queue};
+    xTaskCreate(controller_task, "controller_task", configMINIMAL_STACK_SIZE * 8, controller_queues, 5, &controller_task_handle);
 
     // Launch the SCD40 sensor reader task
     xTaskCreate(scd40_task, "SCD40_task", configMINIMAL_STACK_SIZE * 8, (void*)measurements_queue, 5, &scd40_task_handle);
 
     // Launch the LED controller task
-    xTaskCreate(led_task, "LED_task", configMINIMAL_STACK_SIZE * 8, (void*)measurements_queue, 5, &led_task_handle);
+    xTaskCreate(led_task, "LED_task", configMINIMAL_STACK_SIZE * 8, (void*)led_state_queue, 5, &led_task_handle);
 }

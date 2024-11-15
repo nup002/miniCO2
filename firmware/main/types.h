@@ -9,4 +9,10 @@ struct SCD40measurement{
     float humidity;
 };
 
+enum LED_STATES {
+  LOW_CO2,
+  MEDIUM_CO2,
+  HIGH_CO2
+};
+
 #endif

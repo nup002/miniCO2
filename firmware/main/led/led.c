@@ -42,7 +42,7 @@ esp_err_t initiate_led(void)
 void led_task(void *pvParameters)
 {
     // Get the measurements queue from the pvParameters pointer
-    QueueHandle_t measurements_queue = (QueueHandle_t)pvParameters;
+    QueueHandle_t led_state_queue = (QueueHandle_t)pvParameters;
 
     esp_err_t led_init_err = initiate_led();
     if (led_init_err){
@@ -50,13 +50,11 @@ void led_task(void *pvParameters)
         ESP_ERROR_CHECK_WITHOUT_ABORT(led_init_err);
         return;
     }
-    
-    struct SCD40measurement meas;
-    while (1) {
-        if (xQueueReceive(measurements_queue, &( meas), (TickType_t) 10)){
-            ESP_LOGI(TAG, "CO2: %u ppm", meas.co2);
-            ESP_LOGI(TAG, "Temperature: %.2f °C", meas.temperature);
-            ESP_LOGI(TAG, "Humidity: %.2f %%", meas.humidity);
+
+    enum LED_STATES state;
+    while (1){
+        if (xQueueReceive(led_state_queue, &( state), (TickType_t) 10)){
+            ESP_LOGD(TAG, "Received LED state %u", state);
         }
     }
 }

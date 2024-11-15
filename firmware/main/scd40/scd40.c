@@ -66,11 +66,12 @@ void scd40_task(void *pvParameters)
     // Init the sensor
     esp_err_t scd40_init_err = init_scd40();
     if (scd40_init_err){
-        // Log the error and put MINICO2 into error state and return from the task
+        // Log the error and return from the task
         ESP_ERROR_CHECK_WITHOUT_ABORT(scd40_init_err);
         return;
     }
 
+    // Begin infinite loop of reading measurements
     struct SCD40measurement meas;
     while (1)
     {
@@ -92,7 +93,7 @@ void scd40_task(void *pvParameters)
             continue;
         }
 
-        ESP_LOGI(TAG, "Sending measurement on the queue.");
+        ESP_LOGD(TAG, "Sending measurement on the queue");
         xQueueSendToBack(measurements_queue, &meas, (TickType_t)0);
     }
 }
