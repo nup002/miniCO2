@@ -25,11 +25,12 @@ void set_led_state_from_co2(uint16_t co2, QueueHandle_t led_state_queue){
 }
 
 void handle_measurement(struct SCD40measurement meas, QueueHandle_t led_state_queue){
-    ESP_LOGI(TAG, "Received a sensor measurement");
+    // Log the measurement to the serial connection
     ESP_LOGI(TAG, "CO2: %u ppm", meas.co2);
     ESP_LOGI(TAG, "Temperature: %.2f °C", meas.temperature);
     ESP_LOGI(TAG, "Humidity: %.2f %%", meas.humidity);
 
+    // Set the LED color based on the CO2 level
     set_led_state_from_co2(meas.co2, led_state_queue);
 }
 

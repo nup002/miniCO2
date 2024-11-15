@@ -13,7 +13,7 @@
 
 static const char *TAG = "led";
 
-static led_strip_handle_t led_strip;
+static led_strip_handle_t led;
 
 
 esp_err_t initiate_led(void)
@@ -30,13 +30,27 @@ esp_err_t initiate_led(void)
     };
     
     ESP_LOGI(TAG, "1/2 - Creating new led_strip_handle_t object");
-    ESP_RETURN_ON_ERROR(led_strip_new_rmt_device(&strip_config, &rmt_config, &led_strip), TAG, "LED initialization failed");
+    ESP_RETURN_ON_ERROR(led_strip_new_rmt_device(&strip_config, &rmt_config, &led), TAG, "LED initialization failed");
 
     ESP_LOGI(TAG, "2/2 - Clearing LED");
-    ESP_RETURN_ON_ERROR(led_strip_clear(led_strip), TAG, "LED clear failed");
+    ESP_RETURN_ON_ERROR(led_strip_clear(led), TAG, "LED clear failed");
 
     ESP_LOGI(TAG, "LED initialized succesfully");
     return ESP_OK;
+}
+
+
+void set_led_from_state(enum LED_STATES state){
+    if (state == LOW_CO2){
+        ESP_ERROR_CHECK(led_strip_set_pixel(led, 0, 0, 50, 0));
+    }else if (state == MEDIUM_CO2){
+        ESP_ERROR_CHECK(led_strip_set_pixel(led, 0, 50, 25, 0));
+    }else if (state == HIGH_CO2){
+        ESP_ERROR_CHECK(led_strip_set_pixel(led, 0, 50, 0, 0));
+    }else{
+        ESP_LOGW(TAG, "Invalid LED state %u", state);
+    }
+    led_strip_refresh(led);
 }
 
 void led_task(void *pvParameters)
@@ -55,6 +69,7 @@ void led_task(void *pvParameters)
     while (1){
         if (xQueueReceive(led_state_queue, &( state), (TickType_t) 10)){
             ESP_LOGD(TAG, "Received LED state %u", state);
+            set_led_from_state(state);
         }
     }
 }
