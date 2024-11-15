@@ -14,13 +14,16 @@
 #include <esp_log.h>
 #include "esp_system.h"
 #include "scd4x.h"
+// Project files
+#include "types.h"
 #include "scd40/scd40.h"
 #include "led/led.h"
-#include "global_constants.h"
 
 #ifndef APP_CPU_NUM
 #define APP_CPU_NUM PRO_CPU_NUM
 #endif
+
+static const char *TAG = "MINICO2";
 
 TaskHandle_t scd40_task_handle = NULL;
 TaskHandle_t led_task_handle = NULL;
@@ -75,5 +78,5 @@ void app_main(void)
     xTaskCreate(scd40_task, "SCD40_task", configMINIMAL_STACK_SIZE * 8, (void*)measurements_queue, 5, &scd40_task_handle);
 
     // Launch the LED controller task
-    //xTaskCreate(led_task, "LED_task", configMINIMAL_STACK_SIZE * 8, (void*)measurements_queue, 5, &led_task_handle);
+    xTaskCreate(led_task, "LED_task", configMINIMAL_STACK_SIZE * 8, (void*)measurements_queue, 5, &led_task_handle);
 }

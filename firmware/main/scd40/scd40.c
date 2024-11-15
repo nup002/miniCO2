@@ -4,41 +4,57 @@
 #include <esp_check.h>
 #include <esp_log.h>
 #include <freertos/queue.h>
-#include "../global_constants.h"
+#include "../types.h"
+
+#define SELF_TEST_SENSOR false
+
+static const char *TAG = "scd40";
 
 
 i2c_dev_t SCD40DEV = { 0 };
 
 esp_err_t init_scd40(void)
 {
+    uint8_t N_init_tasks = 7;
+
     ESP_RETURN_ON_ERROR(scd4x_init_desc(&SCD40DEV, 0, SCD40_SDA, SCD40_SCL), TAG, "SCD40 descriptor init failed");
 
     ESP_LOGI(TAG, "Initializing sensor...");
-    scd4x_wake_up(&SCD40DEV);
+    ESP_LOGI(TAG, "1/%u - Waking up sensor", N_init_tasks);
+    scd4x_wake_up(&SCD40DEV); // Raises a false positive error, so we don't error check it
+
+    ESP_LOGI(TAG, "2/%u - Stopping periodic sensor measurements", N_init_tasks);
     ESP_RETURN_ON_ERROR(scd4x_stop_periodic_measurement(&SCD40DEV), TAG, "SCD40 stop periodic measurements failed");
+
+    ESP_LOGI(TAG, "3/%u - Reinitializing sensor", N_init_tasks);
     ESP_RETURN_ON_ERROR(scd4x_reinit(&SCD40DEV), TAG, "SCD40 reinitialization failed");
-    ESP_LOGI(TAG, "Sensor initialized");
     
-    bool malfunction;
-    ESP_RETURN_ON_ERROR(scd4x_perform_self_test(&SCD40DEV, &malfunction), TAG, "SCD40 self test failed");
-    if (!malfunction)
+    if (SELF_TEST_SENSOR)
     {
-        ESP_LOGI(TAG, "Sensor self-tested OK");
-    } else {
-        ESP_LOGE(TAG, "Sensor failed self-test.");
-        return ESP_FAIL;
+        bool malfunction;
+        ESP_LOGI(TAG, "4/%u - Performing sensor self-test", N_init_tasks);
+        ESP_RETURN_ON_ERROR(scd4x_perform_self_test(&SCD40DEV, &malfunction), TAG, "SCD40 self test failed");
+        if (!malfunction)
+        {
+            ESP_LOGI(TAG, "Sensor self-test success");
+        } else {
+            ESP_LOGE(TAG, "Sensor self-test failure");
+            return ESP_FAIL;
+        }
     }
 
     uint16_t serial[3];
+    ESP_LOGI(TAG, "5/%u - Getting sensor serial number", N_init_tasks);
     ESP_RETURN_ON_ERROR(scd4x_get_serial_number(&SCD40DEV, serial, serial + 1, serial + 2), TAG, "SCD40 get serial number failed");
     ESP_LOGI(TAG, "Sensor serial number: 0x%04x%04x%04x", serial[0], serial[1], serial[2]);
 
+    ESP_LOGI(TAG, "6/%u - Disabling automatic sensor self-calibration", N_init_tasks);
     ESP_RETURN_ON_ERROR(scd4x_set_automatic_self_calibration(&SCD40DEV, false), TAG, "SCD40 disabling of automatic self calibration failed");
-    ESP_LOGI(TAG, "Automatic self-calibration disabled");
 
-    ESP_RETURN_ON_ERROR(scd4x_start_low_power_periodic_measurement(&SCD40DEV), TAG, "SCD40 start of low power periodic measurements failed");
-    ESP_LOGI(TAG, "Low power periodic measurements started");
-
+    ESP_LOGI(TAG, "7/%u - Starting periodic sensor measurements", N_init_tasks);
+    ESP_RETURN_ON_ERROR(scd4x_start_periodic_measurement(&SCD40DEV), TAG, "SCD40 start of low power periodic measurements failed");
+    
+    ESP_LOGI(TAG, "Sensor initialized succesfully");
     return ESP_OK;
 }
 
@@ -48,10 +64,10 @@ void scd40_task(void *pvParameters)
     QueueHandle_t measurements_queue = (QueueHandle_t)pvParameters;
 
     // Init the sensor
-    esp_err_t init_err = init_scd40();
-    if (init_err){
+    esp_err_t scd40_init_err = init_scd40();
+    if (scd40_init_err){
         // Log the error and put MINICO2 into error state and return from the task
-        ESP_ERROR_CHECK_WITHOUT_ABORT(init_err);
+        ESP_ERROR_CHECK_WITHOUT_ABORT(scd40_init_err);
         return;
     }
 
@@ -76,10 +92,7 @@ void scd40_task(void *pvParameters)
             continue;
         }
 
+        ESP_LOGI(TAG, "Sending measurement on the queue.");
         xQueueSendToBack(measurements_queue, &meas, (TickType_t)0);
-
-        // ESP_LOGI(TAG, "CO2: %u ppm", meas.co2);
-        // ESP_LOGI(TAG, "Temperature: %.2f °C", meas.temperature);
-        // ESP_LOGI(TAG, "Humidity: %.2f %%", meas.humidity);
     }
 }

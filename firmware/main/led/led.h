@@ -1,3 +1,4 @@
+// Guard against double call to this file
 #ifndef _LED_H
 #define _LED_H
 
