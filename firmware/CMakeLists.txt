@@ -3,9 +3,6 @@
 cmake_minimum_required(VERSION 3.16)
 
 set(EXTRA_COMPONENT_DIRS "..\\..\\esp-idf-lib\\components")
-if(~EXISTS $ENV{EXTRA_COMPONENT_DIRS})
-    message(FATAL_ERROR "esp-idf-lib/components DOES NOT EXIST")
-endif()
 
 include($ENV{IDF_PATH}/tools/cmake/project.cmake)
 project(scd4x)

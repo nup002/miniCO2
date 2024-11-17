@@ -10,7 +10,7 @@
 #include "../types.h"
 
 static const char *TAG = "MINICO2";
-
+static enum DEVICE_STATES DEVICE_STATE = BOOTING; 
 
 void set_led_state_from_co2(uint16_t co2, QueueHandle_t led_state_queue){
     enum LED_STATES state;
@@ -35,16 +35,58 @@ void handle_measurement(struct SCD40measurement meas, QueueHandle_t led_state_qu
 }
 
 
+esp_err_t set_device_state(enum DEVICE_STATES state, QueueHandle_t led_state_queue){
+    enum DEVICE_STATES old_state = DEVICE_STATE;
+    DEVICE_STATE = state;
+    ESP_LOGD(TAG, "Device state changing from %s to %s", DEVICE_STATE_NAMES[old_state], DEVICE_STATE_NAMES[DEVICE_STATE]);
+    switch (DEVICE_STATE)
+    {
+    case BOOTING:
+        xQueueSendToBack(led_state_queue, (void*)&(int32_t){BOOTING_L}, (TickType_t)0);
+        break;
+    case ERROR:
+        xQueueSendToBack(led_state_queue, (void *)&(uint32_t){ERROR_L}, (TickType_t)0);
+        while (1){
+            ESP_LOGE(TAG, "MINICO2 is in ERROR mode");
+            vTaskDelay(pdMS_TO_TICKS(10000));
+        }
+    default:
+        DEVICE_STATE = old_state;
+        return ESP_ERR_INVALID_ARG;
+    }
+    return ESP_OK;
+}
+
+
 void controller_task(void *pvParameters){
 
     // Get the queues from the pvParameters pointer
     QueueHandle_t *queues = (QueueHandle_t *)pvParameters;
     QueueHandle_t measurements_queue = queues[0];
     QueueHandle_t led_state_queue = queues[1];
+    QueueHandle_t errors_queue = queues[2];
+
+    // If the led state queue failed at being created, we go into an infinite loop
+    if (led_state_queue == 0){
+        ESP_LOGD(TAG, "Led state queue is 0, entering infinite loop");
+        while (1){
+            vTaskDelay(pdMS_TO_TICKS(1000));
+        }
+    }
+
+    // If any of the other queues failed at being created, the device is set to an unrecoverable ERROR mode
+    if ((measurements_queue == 0) || (errors_queue == 0)){set_device_state(ERROR, led_state_queue);}
+
+    set_device_state(BOOTING, led_state_queue);
 
     //Begin the infinite loop
     struct SCD40measurement meas;
+    esp_err_t err;
     while (1){
+        // Check for errors
+        if (xQueueReceive(errors_queue, &( err), (TickType_t) 10)){
+            set_device_state(ERROR, led_state_queue);
+        }
 
         // Check for a new measurement
         if (xQueueReceive(measurements_queue, &( meas), (TickType_t) 10)){

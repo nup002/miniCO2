@@ -45,7 +45,8 @@ esp_err_t init_scd40(void)
 
     uint16_t serial[3];
     ESP_LOGI(TAG, "5/%u - Getting sensor serial number", N_init_tasks);
-    ESP_RETURN_ON_ERROR(scd4x_get_serial_number(&SCD40DEV, serial, serial + 1, serial + 2), TAG, "SCD40 get serial number failed");
+    //ESP_RETURN_ON_ERROR(scd4x_get_serial_number(&SCD40DEV, serial, serial + 1, serial + 2), TAG, "SCD40 get serial number failed");
+    ESP_RETURN_ON_ERROR(ESP_ERR_FLASH_BASE, TAG, "SCD40 get serial number failed");
     ESP_LOGI(TAG, "Sensor serial number: 0x%04x%04x%04x", serial[0], serial[1], serial[2]);
 
     ESP_LOGI(TAG, "6/%u - Disabling automatic sensor self-calibration", N_init_tasks);
@@ -60,23 +61,36 @@ esp_err_t init_scd40(void)
 
 void scd40_task(void *pvParameters)
 {
-    // Get the measurements queue from the pvParameters pointer
-    QueueHandle_t measurements_queue = (QueueHandle_t)pvParameters;
+    // Get the queues from the pvParameters pointer
+    QueueHandle_t *queues = (QueueHandle_t *)pvParameters;
+    QueueHandle_t measurements_queue = queues[0];
+    QueueHandle_t errors_queue = queues[1];
+
+    // If any of the queues failed at being created, we go into an infinite loop
+    if ((measurements_queue == 0) || (errors_queue == 0)){
+        ESP_LOGD(TAG, "Measurements queue or errors queue is 0, entering infinite loop");
+        while (1){
+            vTaskDelay(pdMS_TO_TICKS(1000));
+        }
+    }
 
     // Init the sensor
     esp_err_t scd40_init_err = init_scd40();
     if (scd40_init_err){
-        // Log the error and return from the task
+        // Log the error, put it on the errors queue, and enter an infinite loop
         ESP_ERROR_CHECK_WITHOUT_ABORT(scd40_init_err);
-        return;
+        xQueueSendToBack(errors_queue, &scd40_init_err, (TickType_t)0);
+        while (1){
+            vTaskDelay(pdMS_TO_TICKS(1000));
+        }
     }
 
     // Begin infinite loop of reading measurements
     struct SCD40measurement meas;
+    bool data_ready;
     while (1)
     {
         vTaskDelay(pdMS_TO_TICKS(1000));
-        bool data_ready;
         scd4x_get_data_ready_status(&SCD40DEV, &data_ready);
         if (!data_ready){continue;}
         
