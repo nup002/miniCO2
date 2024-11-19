@@ -1,2 +1,2 @@
-idf_component_register(SRCS "minico2_main.cpp" "scd40/scd40.cpp" "led/led.cpp" "controller/controller.cpp"
+idf_component_register(SRCS "minico2_main.cpp" "scd40/scd40.cpp" "led/led.cpp" "controller/controller.cpp" "ble/ble.cpp"
                     INCLUDE_DIRS "")

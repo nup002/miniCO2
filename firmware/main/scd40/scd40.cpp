@@ -1,6 +1,6 @@
-#ifdef __cplusplus
-extern "C" {
-#endif
+// #ifdef __cplusplus
+// extern "C" {
+// #endif
 
 #include "scd40.h"
 #include "scd4x.h"
@@ -115,6 +115,6 @@ void scd40_task(void *pvParameters)
     }
 }
 
-#ifdef __cplusplus
-}
-#endif
+// #ifdef __cplusplus
+// }
+// #endif

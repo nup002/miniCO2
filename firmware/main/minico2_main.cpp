@@ -4,10 +4,6 @@
  * SPDX-License-Identifier: CC0-1.0
  */
 
-// app_main must link to C code
-#ifdef __cplusplus
-extern "C" {
-#endif
 
 #include <stdio.h>
 #include <inttypes.h>
@@ -25,6 +21,7 @@ extern "C" {
 #include "scd40/scd40.h"
 #include "led/led.h"
 #include "controller/controller.h"
+#include "ble/ble.cpp"
 
 #ifndef APP_CPU_NUM
 #define APP_CPU_NUM PRO_CPU_NUM
@@ -38,6 +35,7 @@ static const char *TAG = "main";
 TaskHandle_t scd40_task_handle = NULL;
 TaskHandle_t led_task_handle = NULL;
 TaskHandle_t controller_task_handle = NULL;
+TaskHandle_t ble_task_handle = NULL;
 
 void boot(){
     // Tasks to take before anything else starts.
@@ -72,6 +70,15 @@ void boot(){
     ESP_ERROR_CHECK(i2cdev_init());
 }
 
+
+// app_main must link to C code
+#ifdef __cplusplus
+extern "C" {
+    void app_main(void);
+}
+#endif
+
+
 void app_main(void)
 {
     boot();  //Print ESP32 chip info to the serial port.
@@ -100,8 +107,7 @@ void app_main(void)
     // Launch the SCD40 sensor reader task
     QueueHandle_t scd40_queues[] = {measurements_queue, errors_queue}; 
     xTaskCreate(scd40_task, "SCD40_task", configMINIMAL_STACK_SIZE * 8, scd40_queues, 5, &scd40_task_handle);
-}
 
-#ifdef __cplusplus
+    // Launch the BLE task
+    xTaskCreate(task_ble_entry, "BLE_task", configMINIMAL_STACK_SIZE * 8, NULL, 5, &ble_task_handle);
 }
-#endif
