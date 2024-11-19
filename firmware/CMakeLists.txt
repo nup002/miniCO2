@@ -6,4 +6,4 @@ set(EXTRA_COMPONENT_DIRS "..\\..\\esp-idf-lib\\components")
 
 include($ENV{IDF_PATH}/tools/cmake/project.cmake)
 project(scd4x)
-set(COMPONENTS ["scd4x", "led_strip"])#, "bt", "bt_common", "bluedroid"])
+set(COMPONENTS ["scd4x", "led_strip"])

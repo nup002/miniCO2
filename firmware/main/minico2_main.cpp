@@ -21,16 +21,13 @@
 #include "scd40/scd40.h"
 #include "led/led.h"
 #include "controller/controller.h"
-#include "ble/ble.cpp"
+#include "ble/ble.h"
 
 #ifndef APP_CPU_NUM
 #define APP_CPU_NUM PRO_CPU_NUM
 #endif
 
-
-
-
-static const char *TAG = "main";
+static constexpr  const char *MAIN_TAG = "main";
 
 TaskHandle_t scd40_task_handle = NULL;
 TaskHandle_t led_task_handle = NULL;
@@ -71,7 +68,7 @@ void boot(){
 }
 
 
-// app_main must link to C code
+//app_main must link to C code
 #ifdef __cplusplus
 extern "C" {
     void app_main(void);
@@ -86,22 +83,25 @@ void app_main(void)
     // Init the queues
     struct SCD40measurement meas;
     QueueHandle_t measurements_queue = xQueueCreate(1, sizeof(meas));
-    if (measurements_queue == 0){ESP_LOGE(TAG, "Failed at creating measurements queue");}
+    if (measurements_queue == 0){ESP_LOGE(MAIN_TAG, "Failed at creating measurements queue");}
 
     enum LED_STATES state;
     QueueHandle_t led_state_queue = xQueueCreate(1, sizeof(state));
-    if (led_state_queue == 0){ESP_LOGE(TAG, "Failed at creating LED state queue");}
+    if (led_state_queue == 0){ESP_LOGE(MAIN_TAG, "Failed at creating LED state queue");}
 
     esp_err_t error;
     QueueHandle_t errors_queue = xQueueCreate(1, sizeof(error));
-    if (errors_queue == 0){ESP_LOGE(TAG, "Failed at creating error queue");}
+    if (errors_queue == 0){ESP_LOGE(MAIN_TAG, "Failed at creating error queue");}
 
-    // Launch the LED controller task
+    QueueHandle_t ble_queue = xQueueCreate(1, sizeof(meas));
+    if (ble_queue == 0){ESP_LOGE(MAIN_TAG, "Failed at creating BLE queue");}
+
+    // Launch the LED task
     QueueHandle_t led_queues[] = {led_state_queue, errors_queue}; 
     xTaskCreate(led_task, "LED_task", configMINIMAL_STACK_SIZE * 8, led_queues, 5, &led_task_handle);
 
     // Launch the controller task
-    QueueHandle_t controller_queues[] = {measurements_queue, led_state_queue, errors_queue};
+    QueueHandle_t controller_queues[] = {measurements_queue, led_state_queue, errors_queue, ble_queue};
     xTaskCreate(controller_task, "controller_task", configMINIMAL_STACK_SIZE * 8, controller_queues, 5, &controller_task_handle);
 
     // Launch the SCD40 sensor reader task
@@ -109,5 +109,6 @@ void app_main(void)
     xTaskCreate(scd40_task, "SCD40_task", configMINIMAL_STACK_SIZE * 8, scd40_queues, 5, &scd40_task_handle);
 
     // Launch the BLE task
-    xTaskCreate(task_ble_entry, "BLE_task", configMINIMAL_STACK_SIZE * 8, NULL, 5, &ble_task_handle);
+    QueueHandle_t ble_queues[] = {ble_queue, errors_queue}; 
+    xTaskCreate(ble_task, "BLE_task", configMINIMAL_STACK_SIZE * 8, ble_queues, 5, &ble_task_handle);
 }

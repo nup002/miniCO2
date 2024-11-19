@@ -6,7 +6,9 @@
 #include "esp_gap_ble_api.h"
 #include "esp_gatt_defs.h"
 #include "esp_gattc_api.h"
-#include "esp_log.h"
+#include <esp_log.h>
+#include <esp_err.h>
+#include <esp_check.h>
 #include "esp_sleep.h"
 #include "freertos/task.h"
 #include "measurement.h"
@@ -15,18 +17,15 @@
 #include <cstdint>
 #include <cstring>
 
-#define BLE_TASK_NAME    "ble"
+// Project files
+#include "../types.h"
+
+static const char *BLE_TAG = "ble";
 
 
 constexpr uint8_t BIND_KEY[] = {0x23, 0x1d, 0x39, 0xc1, 0xd7, 0xcc, 0x1a, 0xb1,
                                 0xae, 0xe2, 0x24, 0xcd, 0x09, 0x6d, 0xb9, 0x32};
-                                
-static constexpr uint32_t US_TO_S_FACTOR {1000000};
-static constexpr uint32_t SECONDS_PER_MINUTE {60};
-static constexpr uint64_t SLEEP_1_MINUTE {SECONDS_PER_MINUTE * US_TO_S_FACTOR};
-static constexpr uint64_t SLEEP_5_MINUTES {SLEEP_1_MINUTE * 5};
 
-static bthome::Advertisement advertisement("MINICO2", false, BIND_KEY);
 
 static esp_ble_adv_params_t ble_adv_params = {
     .adv_int_min       = 0x20,
@@ -39,75 +38,101 @@ static esp_ble_adv_params_t ble_adv_params = {
     .adv_filter_policy = ADV_FILTER_ALLOW_SCAN_ANY_CON_ANY,
 };
 
-static uint8_t advertData[64];
-
-void ble_init(void)
+esp_err_t ble_init(void)
 {
-    ESP_LOGI(BLE_TASK_NAME, "Starting BLE init");
-    ESP_ERROR_CHECK(nvs_flash_init());
-    ESP_ERROR_CHECK(esp_bt_controller_mem_release(ESP_BT_MODE_CLASSIC_BT));
+    uint8_t N_init_tasks = 6;
+    ESP_LOGI(BLE_TAG, "Initializing BLE...");
+    ESP_LOGI(BLE_TAG, "1/%u Initializing NVS flash", N_init_tasks);
+    ESP_RETURN_ON_ERROR(nvs_flash_init(), BLE_TAG, "NVS flash init failed");
+    ESP_LOGI(BLE_TAG, "2/%u Releasing controller memory", N_init_tasks);
+    ESP_RETURN_ON_ERROR(esp_bt_controller_mem_release(ESP_BT_MODE_CLASSIC_BT), BLE_TAG, "Releasing controller memory failed");
 
+    ESP_LOGI(BLE_TAG, "3/%u Initializing BT controller", N_init_tasks);
     esp_bt_controller_config_t bt_cfg = BT_CONTROLLER_INIT_CONFIG_DEFAULT();
-    ESP_ERROR_CHECK(esp_bt_controller_init(&bt_cfg));
+    ESP_RETURN_ON_ERROR(esp_bt_controller_init(&bt_cfg), BLE_TAG, "BT controller init failed");
 
-    ESP_ERROR_CHECK(esp_bt_controller_enable(ESP_BT_MODE_BLE));
+    ESP_LOGI(BLE_TAG, "4/%u Enabling BT controller", N_init_tasks);
+    ESP_RETURN_ON_ERROR(esp_bt_controller_enable(ESP_BT_MODE_BLE), BLE_TAG, "Enabling BT controller failed");
 
-    ESP_ERROR_CHECK(esp_bluedroid_init());
-    ESP_ERROR_CHECK(esp_bluedroid_enable());
+    ESP_LOGI(BLE_TAG, "5/%u Initializing bluedroid", N_init_tasks);
+    ESP_RETURN_ON_ERROR(esp_bluedroid_init(), BLE_TAG, "Bluedroid init failed");
+    ESP_LOGI(BLE_TAG, "6/%u Enabling bluedroid", N_init_tasks);
+    ESP_RETURN_ON_ERROR(esp_bluedroid_enable(), BLE_TAG, "Enabling bluedroid failed");
 
-    ESP_LOGI(BLE_TASK_NAME, "BLE init completed");
+    ESP_LOGI(BLE_TAG, "BLE initialized successfully");
+    return ESP_OK;
 }
 
 void ble_deinit(void)
 {
+    ESP_LOGI(BLE_TAG, "Deinitializing BLE...");
     ESP_ERROR_CHECK(esp_bluedroid_disable());
     ESP_ERROR_CHECK(esp_bluedroid_deinit());
     ESP_ERROR_CHECK(esp_bt_controller_disable());
     ESP_ERROR_CHECK(esp_bt_controller_deinit());
+    ESP_LOGI(BLE_TAG, "BLE deinitialized sucesfully");
 }
 
-uint8_t build_data_advert(uint8_t data[])
+uint8_t build_data_advert(uint8_t data[], SCD40measurement meas)
 {
-    // bthome::Measurement temp(bthome::constants::ObjectId::TEMPERATURE_PRECISE, blackboard.sensors.temperature);
-    // bthome::Measurement humid(bthome::constants::ObjectId::HUMIDITY_PRECISE, blackboard.sensors.humidity);
-    // bthome::Measurement press(bthome::constants::ObjectId::PRESSURE, blackboard.sensors.pressure);
+    bthome::Measurement temp(bthome::constants::ObjectId::TEMPERATURE_PRECISE, meas.temperature);
+    bthome::Measurement humid(bthome::constants::ObjectId::HUMIDITY_PRECISE, meas.humidity);
+    bthome::Measurement co2(bthome::constants::ObjectId::CO2, (uint64_t)meas.co2);
 
-    // advertisement.addMeasurement(temp);
-    // advertisement.addMeasurement(humid);
-    // advertisement.addMeasurement(press);
+    bthome::Advertisement advertisement("MINICO2", false, BIND_KEY);
+    advertisement.addMeasurement(temp);
+    advertisement.addMeasurement(humid);
+    advertisement.addMeasurement(co2);
 
-    // memcpy(&data[0], advertisement.getPayload(), advertisement.getPayloadSize());
+    memcpy(&data[0], advertisement.getPayload(), advertisement.getPayloadSize());
 
-    // return advertisement.getPayloadSize();
-    return 0;
+    return advertisement.getPayloadSize();
 }
 
-void task_ble_entry(void* params)
+void ble_task(void* pvParameters)
 {
-    ble_init();
+    // Get the queues from the pvParameters pointer
+    QueueHandle_t *queues = (QueueHandle_t *)pvParameters;
+    QueueHandle_t ble_queue = queues[0];
+    QueueHandle_t errors_queue = queues[1];
+
+    // If any of the queues failed at being created, we go into an infinite loop
+    if ((ble_queue == 0) || (errors_queue == 0)){
+        ESP_LOGD(BLE_TAG, "BLE queue or errors queue is 0, entering infinite loop");
+        while (1){
+            vTaskDelay(pdMS_TO_TICKS(1000));
+        }
+    }
+
+    // Init the BLE
+    esp_err_t ble_init_err = ble_init();
+    if (ble_init_err){
+        // Log the error, put it on the errors queue, and enter an infinite loop
+        ESP_ERROR_CHECK_WITHOUT_ABORT(ble_init_err);
+        xQueueSendToBack(errors_queue, &ble_init_err, (TickType_t)0);
+        while (1){
+            vTaskDelay(pdMS_TO_TICKS(1000));
+        }
+    }
 
     vTaskDelay(200 / portTICK_PERIOD_MS);
 
-    ESP_LOGI(BLE_TASK_NAME, "Entering task loop");
 
-    for (;;)
-    {
-        // Wait for sensor task notify it has read data
-        if (pdTRUE == ulTaskNotifyTake(pdTRUE, 1000 / portTICK_PERIOD_MS))
-        {
-
-            ESP_LOGI(BLE_TASK_NAME, "Sensor data ready");
+    struct SCD40measurement meas;
+    while(1){
+        // Wait for sensor data to be received
+        if (xQueueReceive(ble_queue, &( meas), (TickType_t) 10)){
+            ESP_LOGI(BLE_TAG, "Sensor data received on queue");
 
             // Encode sensor data
-            uint8_t const dataLength = build_data_advert(&advertData[0]);
+            static uint8_t advertData[64];
+            uint8_t const dataLength = build_data_advert(&advertData[0], meas);
 
-            if (dataLength > bthome::constants::BLE_ADVERT_MAX_LEN)
-            {
-                ESP_LOGE(BLE_TASK_NAME, "Advert size %i is too big, can't send it", dataLength);
+            if (dataLength > bthome::constants::BLE_ADVERT_MAX_LEN){
+                ESP_LOGE(BLE_TAG, "Advert size %i is too big, can't send it", dataLength);
             }
-            else
-            {
-                ESP_LOGI(BLE_TASK_NAME, "Advert size: %i bytes", dataLength);
+            else{
+                ESP_LOGI(BLE_TAG, "Advert size: %i bytes", dataLength);
                 // Configure advertising data
                 ESP_ERROR_CHECK(esp_ble_gap_config_adv_data_raw(&advertData[0], dataLength));
 
@@ -122,18 +147,6 @@ void task_ble_entry(void* params)
                 // Stop advertising data
                 ESP_ERROR_CHECK(esp_ble_gap_stop_advertising());
             }
-
-            // De-init all BLE related things
-            ble_deinit();
-
-            // Enter deep sleep
-            ESP_LOGI(BLE_TASK_NAME, "Goodbye!");
-            esp_deep_sleep(SLEEP_5_MINUTES);
-        }
-        else
-        {
-            ESP_LOGE(BLE_TASK_NAME, "Timed out waiting for sensor data");
-            // Handle the timeout somehow
         }
     }
 }

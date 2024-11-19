@@ -1,6 +1,3 @@
-// #ifdef __cplusplus
-// extern "C" {
-// #endif
 #include <stdio.h>
 #include <freertos/FreeRTOS.h>
 #include <freertos/task.h>
@@ -18,7 +15,7 @@
 #define LED_BRIGHTNESS 0.5  // 0 to 1
 
 
-static const char *TAG = "led";
+static const char *LED_TAG = "led";
 
 static int64_t time0 = 0;
 
@@ -26,7 +23,7 @@ static led_strip_handle_t led;
 
 esp_err_t initiate_led(void)
 {
-    ESP_LOGI(TAG, "Initializing the LED...");
+    ESP_LOGI(LED_TAG, "Initializing the LED...");
     led_strip_config_t strip_config = {
         .strip_gpio_num = LED_GPIO,
         .max_leds = 1,
@@ -42,13 +39,13 @@ esp_err_t initiate_led(void)
         .flags = {.with_dma = false},
     };
     
-    ESP_LOGI(TAG, "1/2 - Creating new led_strip_handle_t object");
-    ESP_RETURN_ON_ERROR(led_strip_new_rmt_device(&strip_config, &rmt_config, &led), TAG, "LED initialization failed");
+    ESP_LOGI(LED_TAG, "1/2 - Creating new led_strip_handle_t object");
+    ESP_RETURN_ON_ERROR(led_strip_new_rmt_device(&strip_config, &rmt_config, &led), LED_TAG, "LED initialization failed");
 
-    ESP_LOGI(TAG, "2/2 - Clearing LED");
-    ESP_RETURN_ON_ERROR(led_strip_clear(led), TAG, "LED clear failed");
+    ESP_LOGI(LED_TAG, "2/2 - Clearing LED");
+    ESP_RETURN_ON_ERROR(led_strip_clear(led), LED_TAG, "LED clear failed");
 
-    ESP_LOGI(TAG, "LED initialized succesfully");
+    ESP_LOGI(LED_TAG, "LED initialized succesfully");
     return ESP_OK;
 }
 
@@ -87,7 +84,7 @@ void set_visual_led_state_from_state(enum LED_STATES state, struct LED_VISUAL_ST
         led_visual_state->mode = PULSING;
         led_visual_state->period = 1;
     }else{
-        ESP_LOGW(TAG, "Invalid LED state %u", state);
+        ESP_LOGW(LED_TAG, "Invalid LED state %u", state);
     }
 }
 
@@ -135,7 +132,7 @@ void led_task(void *pvParameters)
     // If led_state_queue is 0 (meaning it failed at being created), we put the LED state to ERROR 
     // and enter an infinite loop
     if (led_state_queue == 0){
-        ESP_LOGD(TAG, "Led state queue is 0, entering infinite loop");
+        ESP_LOGD(LED_TAG, "Led state queue is 0, entering infinite loop");
         set_visual_led_state_from_state(ERROR_L, &led_visual_state);
         while (1){
             vTaskDelay(pdMS_TO_TICKS(1000));
@@ -145,9 +142,9 @@ void led_task(void *pvParameters)
     enum LED_STATES state;
     while (1){
         if (xQueueReceive(led_state_queue, &( state), (TickType_t) 10)){
-            ESP_LOGD(TAG, "Received LED state %u", state);
+            ESP_LOGD(LED_TAG, "Received LED state %u", state);
             set_visual_led_state_from_state(state, &led_visual_state);
-            ESP_LOGI(TAG, "R: %u, G: %u, B: %u, A: %u", led_visual_state.clr.r, led_visual_state.clr.g, led_visual_state.clr.b, led_visual_state.clr.a);
+            ESP_LOGI(LED_TAG, "R: %u, G: %u, B: %u, A: %u", led_visual_state.clr.r, led_visual_state.clr.g, led_visual_state.clr.b, led_visual_state.clr.a);
         }
 
         
@@ -158,7 +155,3 @@ void led_task(void *pvParameters)
         }
     }
 }
-
-// #ifdef __cplusplus
-// }
-// #endif
