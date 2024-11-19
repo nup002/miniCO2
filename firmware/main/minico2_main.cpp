@@ -3,6 +3,12 @@
  *
  * SPDX-License-Identifier: CC0-1.0
  */
+
+// app_main must link to C code
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <stdio.h>
 #include <inttypes.h>
 #include "sdkconfig.h"
@@ -23,6 +29,9 @@
 #ifndef APP_CPU_NUM
 #define APP_CPU_NUM PRO_CPU_NUM
 #endif
+
+
+
 
 static const char *TAG = "main";
 
@@ -92,3 +101,7 @@ void app_main(void)
     QueueHandle_t scd40_queues[] = {measurements_queue, errors_queue}; 
     xTaskCreate(scd40_task, "SCD40_task", configMINIMAL_STACK_SIZE * 8, scd40_queues, 5, &scd40_task_handle);
 }
+
+#ifdef __cplusplus
+}
+#endif

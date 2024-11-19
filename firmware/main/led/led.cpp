@@ -1,3 +1,6 @@
+#ifdef __cplusplus
+extern "C" {
+#endif
 #include <stdio.h>
 #include <freertos/FreeRTOS.h>
 #include <freertos/task.h>
@@ -27,11 +30,16 @@ esp_err_t initiate_led(void)
     led_strip_config_t strip_config = {
         .strip_gpio_num = LED_GPIO,
         .max_leds = 1,
+        .led_pixel_format = LED_PIXEL_FORMAT_GRB,
+        .led_model = LED_MODEL_WS2812,
+        .flags = {.invert_out = 1}
     };
 
     led_strip_rmt_config_t rmt_config = {
+        .clk_src = RMT_CLK_SRC_DEFAULT,
         .resolution_hz = 10 * 1000 * 1000, // 10MHz
-        .flags.with_dma = false,
+        .mem_block_symbols = 0,
+        .flags = {.with_dma = false},
     };
     
     ESP_LOGI(TAG, "1/2 - Creating new led_strip_handle_t object");
@@ -150,3 +158,7 @@ void led_task(void *pvParameters)
         }
     }
 }
+
+#ifdef __cplusplus
+}
+#endif

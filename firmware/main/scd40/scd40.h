@@ -4,10 +4,10 @@
 
 #include "scd4x.h"
 
-extern i2c_dev_t SCD40DEV;
+#define SCD40_SDA GPIO_NUM_18
+#define SCD40_SCL GPIO_NUM_20
 
-static const int SCD40_SDA = 18;
-static const int SCD40_SCL = 20;
+extern i2c_dev_t SCD40DEV;
 
 esp_err_t init_scd40(void);
 

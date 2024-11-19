@@ -1,3 +1,7 @@
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include "scd40.h"
 #include "scd4x.h"
 #include <esp_err.h>
@@ -11,13 +15,13 @@
 static const char *TAG = "scd40";
 
 
-i2c_dev_t SCD40DEV = { 0 };
+i2c_dev_t SCD40DEV;
 
 esp_err_t init_scd40(void)
 {
     uint8_t N_init_tasks = 7;
 
-    ESP_RETURN_ON_ERROR(scd4x_init_desc(&SCD40DEV, 0, SCD40_SDA, SCD40_SCL), TAG, "SCD40 descriptor init failed");
+    ESP_RETURN_ON_ERROR(scd4x_init_desc(&SCD40DEV, (i2c_port_t)0, SCD40_SDA, SCD40_SCL), TAG, "SCD40 descriptor init failed");
 
     ESP_LOGI(TAG, "Initializing sensor...");
     ESP_LOGI(TAG, "1/%u - Waking up sensor", N_init_tasks);
@@ -45,8 +49,7 @@ esp_err_t init_scd40(void)
 
     uint16_t serial[3];
     ESP_LOGI(TAG, "5/%u - Getting sensor serial number", N_init_tasks);
-    //ESP_RETURN_ON_ERROR(scd4x_get_serial_number(&SCD40DEV, serial, serial + 1, serial + 2), TAG, "SCD40 get serial number failed");
-    ESP_RETURN_ON_ERROR(ESP_ERR_FLASH_BASE, TAG, "SCD40 get serial number failed");
+    ESP_RETURN_ON_ERROR(scd4x_get_serial_number(&SCD40DEV, serial, serial + 1, serial + 2), TAG, "SCD40 get serial number failed");
     ESP_LOGI(TAG, "Sensor serial number: 0x%04x%04x%04x", serial[0], serial[1], serial[2]);
 
     ESP_LOGI(TAG, "6/%u - Disabling automatic sensor self-calibration", N_init_tasks);
@@ -111,3 +114,7 @@ void scd40_task(void *pvParameters)
         xQueueSendToBack(measurements_queue, &meas, (TickType_t)0);
     }
 }
+
+#ifdef __cplusplus
+}
+#endif

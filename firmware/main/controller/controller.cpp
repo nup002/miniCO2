@@ -1,3 +1,6 @@
+#ifdef __cplusplus
+extern "C" {
+#endif
 #include <stdio.h>
 #include <freertos/FreeRTOS.h>
 #include <freertos/task.h>
@@ -38,14 +41,17 @@ void handle_measurement(struct SCD40measurement meas, QueueHandle_t led_state_qu
 esp_err_t set_device_state(enum DEVICE_STATES state, QueueHandle_t led_state_queue){
     enum DEVICE_STATES old_state = DEVICE_STATE;
     DEVICE_STATE = state;
+    LED_STATES led_state;
     ESP_LOGD(TAG, "Device state changing from %s to %s", xstr(old_state), xstr(DEVICE_STATE));
     switch (DEVICE_STATE)
     {
     case BOOTING:
-        xQueueSendToBack(led_state_queue, (void*)&(int32_t){BOOTING_L}, (TickType_t)0);
+        led_state = BOOTING_L;
+        xQueueSendToBack(led_state_queue, &led_state, (TickType_t)0);
         break;
     case ERROR:
-        xQueueSendToBack(led_state_queue, (void *)&(uint32_t){ERROR_L}, (TickType_t)0);
+        led_state = ERROR_L;
+        xQueueSendToBack(led_state_queue, &led_state, (TickType_t)0);
         while (1){
             ESP_LOGE(TAG, "MINICO2 is in ERROR mode");
             vTaskDelay(pdMS_TO_TICKS(10000));
@@ -96,3 +102,7 @@ void controller_task(void *pvParameters){
 
     }
 }
+
+#ifdef __cplusplus
+}
+#endif
