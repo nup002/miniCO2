@@ -3,6 +3,9 @@
 
 #include <stdio.h>
 
+#define str(x) #x
+#define xstr(x) str(x)  // Permits printing of enums as strings
+
 // Struct that holds one measurement made by the SCD40 sensor
 struct SCD40measurement{
     uint16_t co2;
@@ -35,14 +38,6 @@ enum DEVICE_STATES {
   WIFI_CONNECTING,
   BT_CONNECTING,
   ERROR
-};
-
-const char * const DEVICE_STATE_NAMES[] = {
-	[MEASURING] = "MEASURING",
-	[BOOTING] = "BOOTING",
-	[WIFI_CONNECTING] = "WIFI_CONNECTING",
-	[BT_CONNECTING] = "BT_CONNECTING",
-	[ERROR] = "ERROR"
 };
 
 // RGBA color struct

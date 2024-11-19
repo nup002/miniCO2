@@ -38,7 +38,7 @@ void handle_measurement(struct SCD40measurement meas, QueueHandle_t led_state_qu
 esp_err_t set_device_state(enum DEVICE_STATES state, QueueHandle_t led_state_queue){
     enum DEVICE_STATES old_state = DEVICE_STATE;
     DEVICE_STATE = state;
-    ESP_LOGD(TAG, "Device state changing from %s to %s", DEVICE_STATE_NAMES[old_state], DEVICE_STATE_NAMES[DEVICE_STATE]);
+    ESP_LOGD(TAG, "Device state changing from %s to %s", xstr(old_state), xstr(DEVICE_STATE));
     switch (DEVICE_STATE)
     {
     case BOOTING:
