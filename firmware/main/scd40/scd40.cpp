@@ -16,7 +16,7 @@ i2c_dev_t SCD40DEV;
 
 esp_err_t init_scd40(void)
 {
-    uint8_t N_init_tasks = 7;
+    uint8_t N_init_tasks = 6;
 
     ESP_RETURN_ON_ERROR(scd4x_init_desc(&SCD40DEV, (i2c_port_t)0, SCD40_SDA, SCD40_SCL), SCD40_TAG, "SCD40 descriptor init failed");
 
