@@ -17,6 +17,7 @@
 #include "esp_system.h"
 #include "scd4x.h"
 // Project files
+#include "zigbee/zigbee.h"
 #include "types.h"
 #include "scd40/scd40.h"
 #include "led/led.h"
@@ -25,6 +26,11 @@
 
 #ifndef APP_CPU_NUM
 #define APP_CPU_NUM PRO_CPU_NUM
+#endif
+
+// Make sure the required ZigBee source code files have been compiled
+#if !defined ZB_ED_ROLE
+#error Define ZB_ED_ROLE in idf.py menuconfig to compile sensor (End Device) source code.
 #endif
 
 static constexpr  const char *MAIN_TAG = "main";
