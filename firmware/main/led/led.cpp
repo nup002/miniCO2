@@ -29,7 +29,7 @@ esp_err_t initiate_led(void)
         .max_leds = 1,
         .led_pixel_format = LED_PIXEL_FORMAT_GRB,
         .led_model = LED_MODEL_WS2812,
-        .flags = {.invert_out = 1}
+        .flags = {.invert_out = 0}
     };
 
     led_strip_rmt_config_t rmt_config = {

@@ -2,6 +2,7 @@
 #include "scd4x.h"
 #include <esp_err.h>
 #include <esp_check.h>
+#include <esp_timer.h>
 #include <esp_log.h>
 #include <freertos/queue.h>
 #include "../types.h"
@@ -9,7 +10,7 @@
 #define SELF_TEST_SENSOR false
 
 static constexpr const char *SCD40_TAG = "scd40";
-
+static int MEASURE_INTERVAL = 10;
 
 i2c_dev_t SCD40DEV;
 
@@ -50,9 +51,6 @@ esp_err_t init_scd40(void)
 
     ESP_LOGI(SCD40_TAG, "6/%u - Disabling automatic sensor self-calibration", N_init_tasks);
     ESP_RETURN_ON_ERROR(scd4x_set_automatic_self_calibration(&SCD40DEV, false), SCD40_TAG, "SCD40 disabling of automatic self calibration failed");
-
-    ESP_LOGI(SCD40_TAG, "7/%u - Starting periodic sensor measurements", N_init_tasks);
-    ESP_RETURN_ON_ERROR(scd4x_start_periodic_measurement(&SCD40DEV), SCD40_TAG, "SCD40 start of low power periodic measurements failed");
     
     ESP_LOGI(SCD40_TAG, "Sensor initialized succesfully");
     return ESP_OK;
@@ -84,12 +82,17 @@ void scd40_task(void *pvParameters)
         }
     }
 
-    // Begin infinite loop of reading measurements
+    // Begin infinite loop of taking measurements 
+    static int64_t time0 = 0;
     struct SCD40measurement meas;
     bool data_ready;
     while (1)
     {
-        vTaskDelay(pdMS_TO_TICKS(1000));
+        if ((esp_timer_get_time() - time0)/1E6 > MEASURE_INTERVAL - 0.25){
+            time0 = esp_timer_get_time();
+            scd4x_measure_single_shot(&SCD40DEV);
+        }
+        vTaskDelay(pdMS_TO_TICKS(500));
         scd4x_get_data_ready_status(&SCD40DEV, &data_ready);
         if (!data_ready){continue;}
         
