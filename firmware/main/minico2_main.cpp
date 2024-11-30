@@ -17,12 +17,14 @@
 #include "esp_system.h"
 #include "scd4x.h"
 // Project files
-#include "zigbee/zigbee.h"
 #include "types.h"
 #include "scd40/scd40.h"
 #include "led/led.h"
 #include "controller/controller.h"
 #include "ble/ble.h"
+extern "C" {
+#include "zigbee/zigbee.h"
+}
 
 #ifndef APP_CPU_NUM
 #define APP_CPU_NUM PRO_CPU_NUM
@@ -39,6 +41,7 @@ TaskHandle_t scd40_task_handle = NULL;
 TaskHandle_t led_task_handle = NULL;
 TaskHandle_t controller_task_handle = NULL;
 TaskHandle_t ble_task_handle = NULL;
+TaskHandle_t zigbee_task_handle = NULL;
 
 void boot(){
     // Tasks to take before anything else starts.
@@ -102,6 +105,9 @@ void app_main(void)
     QueueHandle_t ble_queue = xQueueCreate(1, sizeof(meas));
     if (ble_queue == 0){ESP_LOGE(MAIN_TAG, "Failed at creating BLE queue");}
 
+    QueueHandle_t zigbee_queue = xQueueCreate(1, sizeof(meas));
+    if (zigbee_queue == 0){ESP_LOGE(MAIN_TAG, "Failed at creating ZigBee queue");}
+
     // Launch the LED task
     QueueHandle_t led_queues[] = {led_state_queue, errors_queue}; 
     xTaskCreate(led_task, "LED_task", configMINIMAL_STACK_SIZE * 8, led_queues, 5, &led_task_handle);
@@ -117,4 +123,8 @@ void app_main(void)
     // Launch the BLE task
     QueueHandle_t ble_queues[] = {ble_queue, errors_queue}; 
     xTaskCreate(ble_task, "BLE_task", configMINIMAL_STACK_SIZE * 8, ble_queues, 5, &ble_task_handle);
+
+    // Launch the ZigBee task
+    QueueHandle_t zigbee_queues[] = {zigbee_queue, errors_queue}; 
+    xTaskCreate(zigbee_taskk, "ZigBee_task", configMINIMAL_STACK_SIZE * 8, zigbee_queues, 5, &zigbee_task_handle);
 }
