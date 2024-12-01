@@ -122,7 +122,7 @@ void ble_task(void* pvParameters)
     while(1){
         // Wait for sensor data to be received
         if (xQueueReceive(ble_queue, &( meas), (TickType_t) 10)){
-            ESP_LOGI(BLE_TAG, "Sensor data received on queue");
+            ESP_LOGI(BLE_TAG, "Sensor data received on BLE queue");
 
             // Encode sensor data
             static uint8_t advertData[64];
