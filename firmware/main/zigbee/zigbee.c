@@ -11,8 +11,9 @@ Apologies in advance for the likely blunders. Do you know ZigBee? Feel free to m
 #include "freertos/task.h"
 #include "ha/esp_zigbee_ha_standard.h"
 #include "zigbee.h"
+#include "../types.h"
 
-static const char *ZIGBEE_TAG = "ZIGBEE";
+static const char *ZIGBEE_TAG = "zigbee";
 
 static int16_t zb_temperature_to_s16(float temp)
 {
@@ -37,14 +38,18 @@ static int16_t zb_temperature_to_s16(float temp)
 //     }
 // }
 
-static void esp_app_temp_sensor_handler(float temperature)
+static void esp_app_measurement_handler(struct SCD40measurement measurement)
 {
-    int16_t measured_value = zb_temperature_to_s16(temperature);
-    /* Update temperature sensor measured value */
+    int16_t temp = zb_temperature_to_s16(measurement.temperature);
     esp_zb_lock_acquire(portMAX_DELAY);
+    /* Update temperature sensor measured value */
     esp_zb_zcl_set_attribute_val(HA_ESP_SENSOR_ENDPOINT,
         ESP_ZB_ZCL_CLUSTER_ID_TEMP_MEASUREMENT, ESP_ZB_ZCL_CLUSTER_SERVER_ROLE,
-        ESP_ZB_ZCL_ATTR_TEMP_MEASUREMENT_VALUE_ID, &measured_value, false);
+        ESP_ZB_ZCL_ATTR_TEMP_MEASUREMENT_VALUE_ID, &temp, false);
+    /* Update humidity sensor measured value */
+    esp_zb_zcl_set_attribute_val(HA_ESP_SENSOR_ENDPOINT,
+        ESP_ZB_ZCL_CLUSTER_ID_REL_HUMIDITY_MEASUREMENT, ESP_ZB_ZCL_CLUSTER_SERVER_ROLE,
+        ESP_ZB_ZCL_ATTR_REL_HUMIDITY_MEASUREMENT_VALUE_ID, &measurement.humidity, false);
     esp_zb_lock_release();
 }
 
@@ -89,7 +94,7 @@ void esp_zb_app_signal_handler(esp_zb_app_signal_t *signal_struct)
                      esp_zb_get_pan_id(), esp_zb_get_current_channel(), esp_zb_get_short_address());
         } else {
             ESP_LOGI(ZIGBEE_TAG, "Network steering was not successful (status: %s)", esp_err_to_name(err_status));
-            esp_zb_scheduler_alarm((esp_zb_callback_t)bdb_start_top_level_commissioning_cb, ESP_ZB_BDB_MODE_NETWORK_STEERING, 1000);
+            esp_zb_scheduler_alarm((esp_zb_callback_t)bdb_start_top_level_commissioning_cb, ESP_ZB_BDB_MODE_NETWORK_STEERING, 5000);
         }
         break;
     default:
@@ -149,8 +154,15 @@ static esp_zb_ep_list_t *custom_minico2_ha_ep_create(uint8_t endpoint_id, esp_zb
     return ep_list;
 }
 
-static void esp_zb_task()
+static void zigbee_setup()
 {
+    esp_zb_platform_config_t config = {
+        .radio_config = ESP_ZB_DEFAULT_RADIO_CONFIG(),
+        .host_config = ESP_ZB_DEFAULT_HOST_CONFIG(),
+    };
+    ESP_ERROR_CHECK(nvs_flash_init());
+    ESP_ERROR_CHECK(esp_zb_platform_config(&config));
+
     /* Initialize Zigbee stack */
     esp_zb_cfg_t zb_nwk_cfg = ESP_ZB_ZED_CONFIG();
     esp_zb_init(&zb_nwk_cfg);
@@ -211,11 +223,26 @@ static void esp_zb_task()
 
     esp_zb_set_primary_network_channel_set(ESP_ZB_PRIMARY_CHANNEL_MASK);
     ESP_ERROR_CHECK(esp_zb_start(false));
-
-    esp_zb_stack_main_loop();
 }
 
-void zigbee_taskk(void *pvParameters)
+void zigbee_data_handler_task(void *pvParameters)
+{
+    // Get the queues from the pvParameters pointer
+    QueueHandle_t *queues = (QueueHandle_t *)pvParameters;
+    QueueHandle_t zigbee_queue = queues[0];
+    QueueHandle_t errors_queue = queues[1];
+
+    ESP_LOGI(ZIGBEE_TAG, "Zigbee data handler task launched.");
+    struct SCD40measurement meas;
+    while (1){
+        if (xQueueReceive(zigbee_queue, &( meas), (TickType_t) 10)){
+            ESP_LOGI(ZIGBEE_TAG, "Sensor data received on Zigbee queue");
+            esp_app_measurement_handler(meas);
+        }
+    }
+}
+
+void zigbee_task(void *pvParameters)
 {
     // Get the queues from the pvParameters pointer
     QueueHandle_t *queues = (QueueHandle_t *)pvParameters;
@@ -224,18 +251,19 @@ void zigbee_taskk(void *pvParameters)
 
     // If any of the queues failed at being created, we go into an infinite loop
     if ((zigbee_queue == 0) || (errors_queue == 0)){
-        ESP_LOGD(ZIGBEE_TAG, "ZigBee queue or errors queue is 0, entering infinite loop");
+        ESP_LOGD(ZIGBEE_TAG, "Zigbee queue or errors queue is 0, entering infinite loop");
         while (1){
             vTaskDelay(pdMS_TO_TICKS(1000));
         }
     }
-    esp_zb_platform_config_t config = {
-        .radio_config = ESP_ZB_DEFAULT_RADIO_CONFIG(),
-        .host_config = ESP_ZB_DEFAULT_HOST_CONFIG(),
-    };
-    ESP_ERROR_CHECK(nvs_flash_init());
-    ESP_ERROR_CHECK(esp_zb_platform_config(&config));
 
-    /* Start Zigbee stack task */
-    esp_zb_task();
+    /* Setup zigbee */
+    zigbee_setup();
+
+    /* Launch the ZigBee data handler task */
+    TaskHandle_t zigbee_data_task_handle = NULL;
+    xTaskCreate(zigbee_data_handler_task, "Zigbee_data_task", configMINIMAL_STACK_SIZE * 8, queues, 5, &zigbee_data_task_handle);
+
+    ESP_LOGI(ZIGBEE_TAG, "Zigbee setup finished, launching zigbee stack main loop.");
+    esp_zb_stack_main_loop();
 }

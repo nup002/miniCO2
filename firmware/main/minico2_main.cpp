@@ -113,7 +113,7 @@ void app_main(void)
     xTaskCreate(led_task, "LED_task", configMINIMAL_STACK_SIZE * 8, led_queues, 5, &led_task_handle);
 
     // Launch the controller task
-    QueueHandle_t controller_queues[] = {measurements_queue, led_state_queue, errors_queue, ble_queue};
+    QueueHandle_t controller_queues[] = {measurements_queue, led_state_queue, errors_queue, ble_queue, zigbee_queue};
     xTaskCreate(controller_task, "controller_task", configMINIMAL_STACK_SIZE * 8, controller_queues, 5, &controller_task_handle);
 
     // Launch the SCD40 sensor reader task
@@ -126,5 +126,5 @@ void app_main(void)
 
     // Launch the ZigBee task
     QueueHandle_t zigbee_queues[] = {zigbee_queue, errors_queue}; 
-    xTaskCreate(zigbee_taskk, "ZigBee_task", configMINIMAL_STACK_SIZE * 8, zigbee_queues, 5, &zigbee_task_handle);
+    xTaskCreate(zigbee_task, "ZigBee_task", configMINIMAL_STACK_SIZE * 8, zigbee_queues, 5, &zigbee_task_handle);
 }

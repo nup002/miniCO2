@@ -24,7 +24,7 @@ void set_led_state_from_co2(uint16_t co2, QueueHandle_t led_state_queue){
     xQueueSendToBack(led_state_queue, &state, (TickType_t)0);
 }
 
-void handle_measurement(struct SCD40measurement meas, QueueHandle_t led_state_queue, QueueHandle_t ble_queue){
+void handle_measurement(struct SCD40measurement meas, QueueHandle_t led_state_queue, QueueHandle_t ble_queue, QueueHandle_t zigbee_queue){
     // Print the measurement in JSON on the serial connection
     printf("{CO2: %u, TEMP: %.1f, HUM: %.1f}", meas.co2, meas.temperature, meas.humidity);
 
@@ -33,6 +33,9 @@ void handle_measurement(struct SCD40measurement meas, QueueHandle_t led_state_qu
 
     // Send the measurement to the BLE task for transmission
     xQueueSendToBack(ble_queue, &meas, (TickType_t)0);
+
+    // Send the measurement to the zigbee task for transmission
+    xQueueSendToBack(zigbee_queue, &meas, (TickType_t)0);
 }
 
 
@@ -70,6 +73,7 @@ void controller_task(void *pvParameters){
     QueueHandle_t led_state_queue = queues[1];
     QueueHandle_t errors_queue = queues[2];
     QueueHandle_t ble_queue = queues[3];
+    QueueHandle_t zigbee_queue = queues[4];
 
 
     // If the led state queue failed at being created, we go into an infinite loop
@@ -96,7 +100,7 @@ void controller_task(void *pvParameters){
 
         // Check for a new measurement
         if (xQueueReceive(measurements_queue, &( meas), (TickType_t) 10)){
-            handle_measurement(meas, led_state_queue, ble_queue);
+            handle_measurement(meas, led_state_queue, ble_queue, zigbee_queue);
         }
 
     }
