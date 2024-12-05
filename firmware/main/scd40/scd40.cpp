@@ -65,7 +65,7 @@ void scd40_task(void *pvParameters)
 
     // If any of the queues failed at being created, we go into an infinite loop
     if ((measurements_queue == 0) || (errors_queue == 0)){
-        ESP_LOGD(SCD40_TAG, "Measurements queue or errors queue is 0, entering infinite loop");
+        ESP_LOGE(SCD40_TAG, "Measurements queue or errors queue is 0, entering infinite loop");
         while (1){
             vTaskDelay(pdMS_TO_TICKS(1000));
         }

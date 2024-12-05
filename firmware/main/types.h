@@ -47,7 +47,7 @@ struct led_cfg_s {
   uint16_t limit_medium;  // CO2 concentration in PPM for the MEDIUM_CO2 LED state to enable.
   uint16_t limit_high;    // CO2 concentration in PPM for the HIGH_CO2 LED state to enable.
   uint16_t limit_critical;// CO2 concentration in PPM for the CRITICAL_CO2 LED state to enable.
-} led_cfg_t;
+};
 
 // MiniCO2 configuration struct
 struct minico2_cfg_s {
@@ -56,8 +56,7 @@ struct minico2_cfg_s {
   bool ble_enabled;
   bool zigbee_enabled;
   struct led_cfg_s led_cfg;
-
-} minico2_cfg_t;
+};
 
 // RGBA color struct
 struct RGBA {

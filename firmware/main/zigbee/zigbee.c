@@ -15,9 +15,14 @@ Apologies in advance for the likely blunders. Do you know ZigBee? Feel free to m
 
 static const char *ZIGBEE_TAG = "zigbee";
 
-static int16_t zb_temperature_to_s16(float temp)
+static int16_t zb_temp_and_hum_to_s16(float temp_or_hum)
 {
-    return (int16_t)(temp * 100);
+    return (int16_t)(temp_or_hum * 100);
+}
+
+static float_t zb_co2_to_float(uint16_t co2)
+{
+    return (float_t)(co2 * 1E-6);
 }
 
 // static void esp_app_buttons_handler(switch_func_pair_t *button_func_pair)
@@ -40,7 +45,9 @@ static int16_t zb_temperature_to_s16(float temp)
 
 static void esp_app_measurement_handler(struct SCD40measurement measurement)
 {
-    int16_t temp = zb_temperature_to_s16(measurement.temperature);
+    int16_t temp = zb_temp_and_hum_to_s16(measurement.temperature);
+    int16_t hum = zb_temp_and_hum_to_s16(measurement.humidity);
+    float_t co2 = zb_co2_to_float(measurement.co2);
     esp_zb_lock_acquire(portMAX_DELAY);
     /* Update temperature sensor measured value */
     esp_zb_zcl_set_attribute_val(HA_ESP_SENSOR_ENDPOINT,
@@ -49,7 +56,11 @@ static void esp_app_measurement_handler(struct SCD40measurement measurement)
     /* Update humidity sensor measured value */
     esp_zb_zcl_set_attribute_val(HA_ESP_SENSOR_ENDPOINT,
         ESP_ZB_ZCL_CLUSTER_ID_REL_HUMIDITY_MEASUREMENT, ESP_ZB_ZCL_CLUSTER_SERVER_ROLE,
-        ESP_ZB_ZCL_ATTR_REL_HUMIDITY_MEASUREMENT_VALUE_ID, &measurement.humidity, false);
+        ESP_ZB_ZCL_ATTR_REL_HUMIDITY_MEASUREMENT_VALUE_ID, &hum, false);
+    /* Update co2 sensor measured value */
+    esp_zb_zcl_set_attribute_val(HA_ESP_SENSOR_ENDPOINT,
+        ESP_ZB_ZCL_CLUSTER_ID_CARBON_DIOXIDE_MEASUREMENT, ESP_ZB_ZCL_CLUSTER_SERVER_ROLE,
+        ESP_ZB_ZCL_ATTR_CARBON_DIOXIDE_MEASUREMENT_MEASURED_VALUE_ID, &co2, false);
     esp_zb_lock_release();
 }
 
@@ -105,12 +116,12 @@ void esp_zb_app_signal_handler(esp_zb_app_signal_t *signal_struct)
 }
 
 /* Create the clusters for the Home Assistant endpoint */
-static esp_zb_cluster_list_t *custom_minico2_clusters_create(esp_zb_temperature_sensor_cfg_t *temperature_sensor, esp_zb_humidity_sensor_cfg_t *humidity_sensor)
+static esp_zb_cluster_list_t *custom_minico2_clusters_create(esp_zb_minico2_cfg_t *minico2_sensor)
 {
     /* Get an empty cluster list */
     esp_zb_cluster_list_t *cluster_list = esp_zb_zcl_cluster_list_create();
     /* Create basic cluster with basic config */
-    esp_zb_attribute_list_t *basic_cluster = esp_zb_basic_cluster_create(&(temperature_sensor->basic_cfg));
+    esp_zb_attribute_list_t *basic_cluster = esp_zb_basic_cluster_create(&(minico2_sensor->basic_cfg));
 
     /* Add manufacturer name and model name to the basic cluster */
     ESP_ERROR_CHECK(esp_zb_basic_cluster_add_attr(basic_cluster, ESP_ZB_ZCL_ATTR_BASIC_MANUFACTURER_NAME_ID, MANUFACTURER_NAME));
@@ -120,20 +131,21 @@ static esp_zb_cluster_list_t *custom_minico2_clusters_create(esp_zb_temperature_
     ESP_ERROR_CHECK(esp_zb_cluster_list_add_basic_cluster(cluster_list, basic_cluster, ESP_ZB_ZCL_CLUSTER_SERVER_ROLE));
 
     /* Add indentify cluster to the cluster list */
-    ESP_ERROR_CHECK(esp_zb_cluster_list_add_identify_cluster(cluster_list, esp_zb_identify_cluster_create(&(temperature_sensor->identify_cfg)), ESP_ZB_ZCL_CLUSTER_SERVER_ROLE));
+    ESP_ERROR_CHECK(esp_zb_cluster_list_add_identify_cluster(cluster_list, esp_zb_identify_cluster_create(&(minico2_sensor->identify_cfg)), ESP_ZB_ZCL_CLUSTER_SERVER_ROLE));
 
     /* No idea what's going on here */
     ESP_ERROR_CHECK(esp_zb_cluster_list_add_identify_cluster(cluster_list, esp_zb_zcl_attr_list_create(ESP_ZB_ZCL_CLUSTER_ID_IDENTIFY), ESP_ZB_ZCL_CLUSTER_CLIENT_ROLE));
 
     /* Add the sensor clusters to the cluster list */
-    ESP_ERROR_CHECK(esp_zb_cluster_list_add_temperature_meas_cluster(cluster_list, esp_zb_temperature_meas_cluster_create(&(temperature_sensor->temp_meas_cfg)), ESP_ZB_ZCL_CLUSTER_SERVER_ROLE));
-    ESP_ERROR_CHECK(esp_zb_cluster_list_add_humidity_meas_cluster(cluster_list, esp_zb_humidity_meas_cluster_create(&(humidity_sensor->hum_meas_cfg)), ESP_ZB_ZCL_CLUSTER_SERVER_ROLE));
+    ESP_ERROR_CHECK(esp_zb_cluster_list_add_temperature_meas_cluster(cluster_list, esp_zb_temperature_meas_cluster_create(&(minico2_sensor->temp_meas_cfg)), ESP_ZB_ZCL_CLUSTER_SERVER_ROLE));
+    ESP_ERROR_CHECK(esp_zb_cluster_list_add_humidity_meas_cluster(cluster_list, esp_zb_humidity_meas_cluster_create(&(minico2_sensor->hum_meas_cfg)), ESP_ZB_ZCL_CLUSTER_SERVER_ROLE));
+    ESP_ERROR_CHECK(esp_zb_cluster_list_add_carbon_dioxide_measurement_cluster(cluster_list, esp_zb_carbon_dioxide_measurement_cluster_create(&(minico2_sensor->co2_meas_cfg)), ESP_ZB_ZCL_CLUSTER_SERVER_ROLE));
 
     return cluster_list;
 }
 
 /* Create the MINICO2 ZigBee Home Assistant endpoint. */
-static esp_zb_ep_list_t *custom_minico2_ha_ep_create(uint8_t endpoint_id, esp_zb_temperature_sensor_cfg_t *temperature_sensor, esp_zb_humidity_sensor_cfg_t *humidity_sensor)
+static esp_zb_ep_list_t *custom_minico2_ha_ep_create(uint8_t endpoint_id, esp_zb_minico2_cfg_t *minico2_sensor)
 {
     /* Get the list of existing endpoints. */
     esp_zb_ep_list_t *ep_list = esp_zb_ep_list_create();
@@ -147,7 +159,7 @@ static esp_zb_ep_list_t *custom_minico2_ha_ep_create(uint8_t endpoint_id, esp_zb
     };
 
     /* Create the list of clusters for the Home Assistant endpoint*/
-    esp_zb_cluster_list_t *clusters = custom_minico2_clusters_create(temperature_sensor, humidity_sensor);
+    esp_zb_cluster_list_t *clusters = custom_minico2_clusters_create(minico2_sensor);
 
     /* Add the list of clusters to a new endpoint defined by ha_endpoint_config, and add that endpoint to the list of all endpoints */
     esp_zb_ep_list_add_ep(ep_list, clusters, ha_endpoint_config);
@@ -170,19 +182,18 @@ static void zigbee_setup()
     /* 
     Create customized MINICO2 endpoint 
     */
+    esp_zb_minico2_cfg_t minico2_cfg = ESP_ZB_DEFAULT_MINICO2_SENSOR_CONFIG();
 
-    /* First the temperature sensor */
-    esp_zb_temperature_sensor_cfg_t temp_sensor_cfg = ESP_ZB_DEFAULT_TEMPERATURE_SENSOR_CONFIG();
-    temp_sensor_cfg.temp_meas_cfg.min_value = zb_temperature_to_s16(ESP_TEMP_SENSOR_MIN_VALUE);
-    temp_sensor_cfg.temp_meas_cfg.max_value = zb_temperature_to_s16(ESP_TEMP_SENSOR_MAX_VALUE);
-
-    /* Then the humidity sensor */
-    esp_zb_humidity_sensor_cfg_t rh_sensor_cfg = ESP_ZB_DEFAULT_HUMIDITY_SENSOR_CONFIG();
-    rh_sensor_cfg.hum_meas_cfg.min_value = ESP_RH_SENSOR_MIN_VALUE;
-    rh_sensor_cfg.hum_meas_cfg.max_value = ESP_RH_SENSOR_MAX_VALUE;
+    /* Set sensor limits */
+    minico2_cfg.temp_meas_cfg.min_value = zb_temp_and_hum_to_s16(ESP_TEMP_SENSOR_MIN_VALUE);
+    minico2_cfg.temp_meas_cfg.max_value = zb_temp_and_hum_to_s16(ESP_TEMP_SENSOR_MAX_VALUE);
+    minico2_cfg.hum_meas_cfg.min_value = zb_temp_and_hum_to_s16(ESP_RH_SENSOR_MIN_VALUE);
+    minico2_cfg.hum_meas_cfg.max_value = zb_temp_and_hum_to_s16(ESP_RH_SENSOR_MAX_VALUE);
+    minico2_cfg.co2_meas_cfg.min_measured_value = zb_temp_and_hum_to_s16(ESP_RH_SENSOR_MIN_VALUE);
+    minico2_cfg.co2_meas_cfg.max_measured_value = zb_temp_and_hum_to_s16(ESP_RH_SENSOR_MAX_VALUE);
 
     /* Build the Home Assistant endpoint */
-    esp_zb_ep_list_t *esp_zb_sensor_ep = custom_minico2_ha_ep_create(HA_ESP_SENSOR_ENDPOINT, &temp_sensor_cfg, &rh_sensor_cfg);
+    esp_zb_ep_list_t *esp_zb_sensor_ep = custom_minico2_ha_ep_create(HA_ESP_SENSOR_ENDPOINT, &minico2_cfg);
 
     /* Register the Home Assistant endpoint. This is like 'committing' the endpoint, after which we cannot modify it. */
     esp_zb_device_register(esp_zb_sensor_ep);
@@ -232,6 +243,14 @@ void zigbee_data_handler_task(void *pvParameters)
     QueueHandle_t zigbee_queue = queues[0];
     QueueHandle_t errors_queue = queues[1];
 
+    // If any of the queues failed at being created, we go into an infinite loop
+    if ((zigbee_queue == 0) || (errors_queue == 0)){
+        ESP_LOGE(ZIGBEE_TAG, "Zigbee queue or errors queue is 0, entering infinite loop");
+        while (1){
+            vTaskDelay(pdMS_TO_TICKS(1000));
+        }
+    }
+
     ESP_LOGI(ZIGBEE_TAG, "Zigbee data handler task launched.");
     struct SCD40measurement meas;
     while (1){
@@ -251,7 +270,7 @@ void zigbee_task(void *pvParameters)
 
     // If any of the queues failed at being created, we go into an infinite loop
     if ((zigbee_queue == 0) || (errors_queue == 0)){
-        ESP_LOGD(ZIGBEE_TAG, "Zigbee queue or errors queue is 0, entering infinite loop");
+        ESP_LOGE(ZIGBEE_TAG, "Zigbee queue or errors queue is 0, entering infinite loop");
         while (1){
             vTaskDelay(pdMS_TO_TICKS(1000));
         }
@@ -262,7 +281,8 @@ void zigbee_task(void *pvParameters)
 
     /* Launch the ZigBee data handler task */
     TaskHandle_t zigbee_data_task_handle = NULL;
-    xTaskCreate(zigbee_data_handler_task, "Zigbee_data_task", configMINIMAL_STACK_SIZE * 8, queues, 5, &zigbee_data_task_handle);
+    QueueHandle_t zigbee_queues[] = {zigbee_queue, errors_queue}; 
+    xTaskCreate(zigbee_data_handler_task, "Zigbee_data_task", configMINIMAL_STACK_SIZE * 8, zigbee_queues, 5, &zigbee_data_task_handle);
 
     ESP_LOGI(ZIGBEE_TAG, "Zigbee setup finished, launching zigbee stack main loop.");
     esp_zb_stack_main_loop();
