@@ -132,7 +132,7 @@ void led_task(void *pvParameters)
     // If led_state_queue is 0 (meaning it failed at being created), we put the LED state to ERROR 
     // and enter an infinite loop
     if (led_state_queue == 0){
-        ESP_LOGD(LED_TAG, "Led state queue is 0, entering infinite loop");
+        ESP_LOGE(LED_TAG, "Led state queue is 0, entering infinite loop");
         set_visual_led_state_from_state(ERROR_L, &led_visual_state);
         while (1){
             vTaskDelay(pdMS_TO_TICKS(1000));
