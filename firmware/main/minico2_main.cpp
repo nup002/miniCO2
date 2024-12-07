@@ -24,6 +24,7 @@
 #include "ble/ble.h"
 extern "C" {
 #include "zigbee/zigbee.h"
+#include "console/console.h"
 }
 
 #ifndef APP_CPU_NUM
@@ -42,6 +43,7 @@ TaskHandle_t led_task_handle = NULL;
 TaskHandle_t controller_task_handle = NULL;
 TaskHandle_t ble_task_handle = NULL;
 TaskHandle_t zigbee_task_handle = NULL;
+TaskHandle_t console_task_handle = NULL;
 
 void boot(){
     // Tasks to take before anything else starts.
@@ -127,4 +129,7 @@ void app_main(void)
     // Launch the ZigBee task
     QueueHandle_t zigbee_queues[] = {zigbee_queue, errors_queue}; 
     xTaskCreate(zigbee_task, "ZigBee_task", configMINIMAL_STACK_SIZE * 8, zigbee_queues, 5, &zigbee_task_handle);
+
+    // Launch the console task
+    xTaskCreate(console_task, "console_task", configMINIMAL_STACK_SIZE * 8, NULL, 5, &console_task_handle);
 }
