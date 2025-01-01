@@ -52,7 +52,7 @@ esp_err_t init_scd40(void)
     ESP_LOGI(SCD40_TAG, "6/%u - Disabling automatic sensor self-calibration", N_init_tasks);
     ESP_RETURN_ON_ERROR(scd4x_set_automatic_self_calibration(&SCD40DEV, false), SCD40_TAG, "SCD40 disabling of automatic self calibration failed");
     
-    ESP_LOGI(SCD40_TAG, "Sensor initialized succesfully");
+    ESP_LOGI(SCD40_TAG, "Sensor initialized successfully");
     return ESP_OK;
 }
 

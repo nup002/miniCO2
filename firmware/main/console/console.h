@@ -1,6 +1,6 @@
 #ifndef _CONSOLE_H
 #define _CONSOLE_H
 
-void console_task(void *pvParameters);
+void start_console(void);
 
 #endif

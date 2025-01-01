@@ -8,15 +8,19 @@
 #include <esp_log.h>
 #include "sdkconfig.h"
 #include "../types.h"
+extern "C" {
+#include "../console/console.h"
+#include "../globals.h"
+}
 
 static const char *CONTROLLER_TAG = "MINICO2";
 static enum DEVICE_STATES DEVICE_STATE = BOOTING; 
 
 void set_led_state_from_co2(uint16_t co2, QueueHandle_t led_state_queue){
     enum LED_STATES state;
-    if (co2 < 1000){
+    if (co2 < MINICO2CONFIG.led_cfg.limit_medium){
         state = LOW_CO2;
-    }else if (co2 < 2000){
+    }else if (co2 < MINICO2CONFIG.led_cfg.limit_high){
         state = MEDIUM_CO2;
     }else{
         state = HIGH_CO2;
@@ -26,7 +30,9 @@ void set_led_state_from_co2(uint16_t co2, QueueHandle_t led_state_queue){
 
 void handle_measurement(struct SCD40measurement meas, QueueHandle_t led_state_queue, QueueHandle_t ble_queue, QueueHandle_t zigbee_queue){
     // Print the measurement in JSON on the serial connection
-    printf("{CO2: %u, TEMP: %.1f, HUM: %.1f}", meas.co2, meas.temperature, meas.humidity);
+    if (MINICO2CONFIG.serial_print_enabled) {
+        printf("{CO2: %u, TEMP: %.1f, HUM: %.1f}\n", meas.co2, meas.temperature, meas.humidity);
+    }
 
     // Set the LED color based on the CO2 level
     set_led_state_from_co2(meas.co2, led_state_queue);
@@ -88,6 +94,10 @@ void controller_task(void *pvParameters){
     if ((measurements_queue == 0) || (errors_queue == 0) || (ble_queue == 0)){set_device_state(ERROR, led_state_queue);}
 
     set_device_state(BOOTING, led_state_queue);
+
+    // Give the device time to boot and then launch the console
+    vTaskDelay(pdMS_TO_TICKS(1000));
+    start_console();
 
     //Begin the infinite loop
     struct SCD40measurement meas;

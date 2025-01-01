@@ -43,7 +43,7 @@ enum DEVICE_STATES {
 
 // LED configuration struct
 struct led_cfg_s {
-  float brightess;        // 0 to 1. Set to 0 to fully disable the LED.
+  float brightness;        // 0 to 1. Set to 0 to fully disable the LED.
   uint16_t limit_medium;  // CO2 concentration in PPM for the MEDIUM_CO2 LED state to enable.
   uint16_t limit_high;    // CO2 concentration in PPM for the HIGH_CO2 LED state to enable.
   uint16_t limit_critical;// CO2 concentration in PPM for the CRITICAL_CO2 LED state to enable.
@@ -51,8 +51,9 @@ struct led_cfg_s {
 
 // MiniCO2 configuration struct
 struct minico2_cfg_s {
-  char *name;                   // User-defined nickname for easy identification
+  const char *name;             // User-defined nickname for easy identification
   uint16_t measurement_period;  // Number of seconds between each measurement. Any number less than 5 is forced to 5.
+  bool serial_print_enabled;
   bool ble_enabled;
   bool zigbee_enabled;
   struct led_cfg_s led_cfg;

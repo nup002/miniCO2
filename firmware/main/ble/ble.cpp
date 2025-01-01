@@ -122,7 +122,7 @@ void ble_task(void* pvParameters)
     while(1){
         // Wait for sensor data to be received
         if (xQueueReceive(ble_queue, &( meas), (TickType_t) 10)){
-            ESP_LOGI(BLE_TAG, "Sensor data received on BLE queue");
+            ESP_LOGD(BLE_TAG, "Sensor data received on BLE queue");
 
             // Encode sensor data
             static uint8_t advertData[64];
@@ -132,7 +132,6 @@ void ble_task(void* pvParameters)
                 ESP_LOGE(BLE_TAG, "Advert size %i is too big, can't send it", dataLength);
             }
             else{
-                ESP_LOGI(BLE_TAG, "Advert size: %i bytes", dataLength);
                 // Configure advertising data
                 ESP_ERROR_CHECK(esp_ble_gap_config_adv_data_raw(&advertData[0], dataLength));
 

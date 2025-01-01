@@ -104,7 +104,7 @@ void esp_zb_app_signal_handler(esp_zb_app_signal_t *signal_struct)
                      extended_pan_id[3], extended_pan_id[2], extended_pan_id[1], extended_pan_id[0],
                      esp_zb_get_pan_id(), esp_zb_get_current_channel(), esp_zb_get_short_address());
         } else {
-            ESP_LOGI(ZIGBEE_TAG, "Network steering was not successful (status: %s)", esp_err_to_name(err_status));
+            ESP_LOGD(ZIGBEE_TAG, "Network steering was not successful (status: %s)", esp_err_to_name(err_status));
             esp_zb_scheduler_alarm((esp_zb_callback_t)bdb_start_top_level_commissioning_cb, ESP_ZB_BDB_MODE_NETWORK_STEERING, 5000);
         }
         break;
@@ -255,7 +255,7 @@ void zigbee_data_handler_task(void *pvParameters)
     struct SCD40measurement meas;
     while (1){
         if (xQueueReceive(zigbee_queue, &( meas), (TickType_t) 10)){
-            ESP_LOGI(ZIGBEE_TAG, "Sensor data received on Zigbee queue");
+            ESP_LOGD(ZIGBEE_TAG, "Sensor data received on Zigbee queue");
             esp_app_measurement_handler(meas);
         }
     }

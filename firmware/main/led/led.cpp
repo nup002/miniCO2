@@ -144,7 +144,7 @@ void led_task(void *pvParameters)
         if (xQueueReceive(led_state_queue, &( state), (TickType_t) 10)){
             ESP_LOGD(LED_TAG, "Received LED state %u", state);
             set_visual_led_state_from_state(state, &led_visual_state);
-            ESP_LOGI(LED_TAG, "R: %u, G: %u, B: %u, A: %u", led_visual_state.clr.r, led_visual_state.clr.g, led_visual_state.clr.b, led_visual_state.clr.a);
+            ESP_LOGD(LED_TAG, "LED set to R: %u, G: %u, B: %u, A: %u, State: %s", led_visual_state.clr.r, led_visual_state.clr.g, led_visual_state.clr.b, led_visual_state.clr.a, str(led_visual_state.mode));
         }
 
         

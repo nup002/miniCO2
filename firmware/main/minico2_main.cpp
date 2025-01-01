@@ -24,7 +24,6 @@
 #include "ble/ble.h"
 extern "C" {
 #include "zigbee/zigbee.h"
-#include "console/console.h"
 }
 
 #ifndef APP_CPU_NUM
@@ -36,14 +35,16 @@ extern "C" {
 #error Define ZB_ED_ROLE in idf.py menuconfig to compile sensor (End Device) source code.
 #endif
 
-static constexpr  const char *MAIN_TAG = "main";
+static constexpr const char *MAIN_TAG = "main";
 
 TaskHandle_t scd40_task_handle = NULL;
 TaskHandle_t led_task_handle = NULL;
 TaskHandle_t controller_task_handle = NULL;
 TaskHandle_t ble_task_handle = NULL;
 TaskHandle_t zigbee_task_handle = NULL;
-TaskHandle_t console_task_handle = NULL;
+
+// Global scope configuration variable
+minico2_cfg_s CONFIGURATION;
 
 void boot(){
     // Tasks to take before anything else starts.
@@ -90,7 +91,7 @@ extern "C" {
 void app_main(void)
 {
     boot();  //Print ESP32 chip info to the serial port.
-    
+
     // Init the queues
     struct SCD40measurement meas;
     QueueHandle_t measurements_queue = xQueueCreate(1, sizeof(meas));
@@ -129,7 +130,4 @@ void app_main(void)
     // Launch the ZigBee task
     QueueHandle_t zigbee_queues[] = {zigbee_queue, errors_queue}; 
     xTaskCreate(zigbee_task, "ZigBee_task", configMINIMAL_STACK_SIZE * 8, zigbee_queues, 5, &zigbee_task_handle);
-
-    // Launch the console task
-    xTaskCreate(console_task, "console_task", configMINIMAL_STACK_SIZE * 8, NULL, 5, &console_task_handle);
 }
