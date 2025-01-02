@@ -16,6 +16,7 @@
 #include <esp_log.h>
 #include "esp_system.h"
 #include "scd4x.h"
+#include <esp_event.h>
 // Project files
 #include "types.h"
 #include "scd40/scd40.h"
@@ -89,7 +90,10 @@ extern "C" {
 
 
 void app_main(void)
-{
+{   
+    // Init the default event loop
+    esp_event_loop_create_default();
+
     boot();  //Print ESP32 chip info to the serial port.
 
     // Init the queues
@@ -113,21 +117,21 @@ void app_main(void)
 
     // Launch the LED task
     QueueHandle_t led_queues[] = {led_state_queue, errors_queue}; 
-    xTaskCreate(led_task, "LED_task", configMINIMAL_STACK_SIZE * 8, led_queues, 5, &led_task_handle);
+    xTaskCreate(led_task, "LED_task", 4096, led_queues, 10, &led_task_handle);
 
     // Launch the controller task
     QueueHandle_t controller_queues[] = {measurements_queue, led_state_queue, errors_queue, ble_queue, zigbee_queue};
-    xTaskCreate(controller_task, "controller_task", configMINIMAL_STACK_SIZE * 8, controller_queues, 5, &controller_task_handle);
+    xTaskCreate(controller_task, "controller_task", configMINIMAL_STACK_SIZE * 8, controller_queues, 10, &controller_task_handle);
 
     // Launch the SCD40 sensor reader task
     QueueHandle_t scd40_queues[] = {measurements_queue, errors_queue}; 
-    xTaskCreate(scd40_task, "SCD40_task", configMINIMAL_STACK_SIZE * 8, scd40_queues, 5, &scd40_task_handle);
+    xTaskCreate(scd40_task, "SCD40_task", configMINIMAL_STACK_SIZE * 8, scd40_queues, 10, &scd40_task_handle);
 
     // Launch the BLE task
     QueueHandle_t ble_queues[] = {ble_queue, errors_queue}; 
-    xTaskCreate(ble_task, "BLE_task", configMINIMAL_STACK_SIZE * 8, ble_queues, 5, &ble_task_handle);
+    xTaskCreate(ble_task, "BLE_task", configMINIMAL_STACK_SIZE * 8, ble_queues, 10, &ble_task_handle);
 
     // Launch the ZigBee task
     QueueHandle_t zigbee_queues[] = {zigbee_queue, errors_queue}; 
-    xTaskCreate(zigbee_task, "ZigBee_task", configMINIMAL_STACK_SIZE * 8, zigbee_queues, 5, &zigbee_task_handle);
+    xTaskCreate(zigbee_task, "ZigBee_task", configMINIMAL_STACK_SIZE * 8, zigbee_queues, 10, &zigbee_task_handle);
 }

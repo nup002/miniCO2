@@ -10,16 +10,20 @@
 #include "led_strip.h"
 #include "sdkconfig.h"
 #include "../types.h"
+#include "../config/config.h"
+#include "../globals.h"
 #include "led.h"
-
-#define LED_BRIGHTNESS 0.5  // 0 to 1
-
 
 static const char *LED_TAG = "led";
 
 static int64_t time0 = 0;
 
 static led_strip_handle_t led;
+
+// Create a struct to hold the state of the LED
+struct RGBA led_clr = {0, 0, 0, (uint16_t)(255*MINICO2CONFIG.led_cfg.brightness)};
+struct LED_VISUAL_STATE led_visual_state = {led_clr, STATIC, 1};
+
 
 esp_err_t initiate_led(void)
 {
@@ -101,23 +105,27 @@ void progress_led_pulse(struct LED_VISUAL_STATE state){
     set_led_from_RGBA(new_clr);
 }
 
+void update_led(){
+    if (led_visual_state.mode == STATIC) {
+        set_led_from_RGBA(led_visual_state.clr);
+    } else if (led_visual_state.mode == PULSING) {
+        progress_led_pulse(led_visual_state);
+    }
+}
+
+static void led_brightness_handler(void* handler_args, esp_event_base_t base, int32_t id, void* event_data)
+{
+    ESP_LOGD(LED_TAG, "led_brightness_handler received event");
+    led_visual_state.clr.a = 255*MINICO2CONFIG.led_cfg.brightness;
+    update_led();
+}
+
 void led_task(void *pvParameters)
 {
     // Get the queues from the pvParameters pointer
     QueueHandle_t *queues = (QueueHandle_t *)pvParameters;
     QueueHandle_t led_state_queue = queues[0];
     QueueHandle_t errors_queue = queues[1];
-
-    // Create a struct to hold the state of the LED;
-    struct RGBA led_clr; 
-    led_clr.r = 0;
-    led_clr.g = 0;
-    led_clr.b = 0;
-    led_clr.a = 255*LED_BRIGHTNESS;
-    struct LED_VISUAL_STATE led_visual_state;
-    led_visual_state.clr = led_clr;
-    led_visual_state.mode = STATIC;    
-    led_visual_state.period = 1;
 
     esp_err_t led_init_err = initiate_led();
     if (led_init_err){
@@ -139,6 +147,10 @@ void led_task(void *pvParameters)
         }
     }
 
+    // Register the event handlers
+    esp_err_t err = esp_event_handler_instance_register(CONFIG_EVENTS, LED_BRIGHTNESS_EVENT, led_brightness_handler, NULL, NULL);
+    ESP_LOGI(LED_TAG, "Handler registration result: %s", esp_err_to_name(err));
+
     enum LED_STATES state;
     while (1){
         if (xQueueReceive(led_state_queue, &( state), (TickType_t) 10)){
@@ -146,12 +158,6 @@ void led_task(void *pvParameters)
             set_visual_led_state_from_state(state, &led_visual_state);
             ESP_LOGD(LED_TAG, "LED set to R: %u, G: %u, B: %u, A: %u, State: %s", led_visual_state.clr.r, led_visual_state.clr.g, led_visual_state.clr.b, led_visual_state.clr.a, str(led_visual_state.mode));
         }
-
-        
-        if (led_visual_state.mode == STATIC) {
-            set_led_from_RGBA(led_visual_state.clr);
-        } else if (led_visual_state.mode == PULSING) {
-            progress_led_pulse(led_visual_state);
-        }
+        update_led();
     }
 }

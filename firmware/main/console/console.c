@@ -164,6 +164,7 @@ void start_console(void)
     /* Prompt to be printed before each line.
      * This can be customized, made dynamic, etc.
      */
+    repl_config.task_priority = 10;
     repl_config.prompt = PROMPT_STR ">";
     repl_config.max_cmdline_length = 100;
 
