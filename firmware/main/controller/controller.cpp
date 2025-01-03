@@ -6,15 +6,18 @@
 #include <esp_err.h>
 #include <esp_check.h>
 #include <esp_log.h>
+#include <esp_event.h>
 #include "sdkconfig.h"
 #include "../types.h"
 extern "C" {
 #include "../console/console.h"
 #include "../globals.h"
+#include "../config/config.h"
 }
 
 static const char *CONTROLLER_TAG = "MINICO2";
 static enum DEVICE_STATES DEVICE_STATE = BOOTING; 
+struct SCD40measurement most_recent_measurement = {0};
 
 void set_led_state_from_co2(uint16_t co2, QueueHandle_t led_state_queue){
     enum LED_STATES state;
@@ -33,7 +36,8 @@ void handle_measurement(struct SCD40measurement meas, QueueHandle_t led_state_qu
     if (MINICO2CONFIG.serial_print_enabled) {
         printf("{CO2: %u, TEMP: %.1f, HUM: %.1f}\n", meas.co2, meas.temperature, meas.humidity);
     }
-
+    most_recent_measurement = meas;
+    
     // Set the LED color based on the CO2 level
     set_led_state_from_co2(meas.co2, led_state_queue);
 
@@ -44,6 +48,11 @@ void handle_measurement(struct SCD40measurement meas, QueueHandle_t led_state_qu
     xQueueSendToBack(zigbee_queue, &meas, (TickType_t)0);
 }
 
+// Handler for changes to the LED CO2 limits 
+static void co2_limits_handler(void* handler_args, esp_event_base_t base, int32_t id, void* event_data){
+    auto led_state_queue = (QueueHandle_t)(handler_args);
+    set_led_state_from_co2(most_recent_measurement.co2, led_state_queue);
+}
 
 esp_err_t set_device_state(enum DEVICE_STATES state, QueueHandle_t led_state_queue){
     enum DEVICE_STATES old_state = DEVICE_STATE;
@@ -94,6 +103,9 @@ void controller_task(void *pvParameters){
     if ((measurements_queue == 0) || (errors_queue == 0) || (ble_queue == 0)){set_device_state(ERROR, led_state_queue);}
 
     set_device_state(BOOTING, led_state_queue);
+
+    // Connect event handlers
+    ESP_ERROR_CHECK(esp_event_handler_instance_register(CONFIG_EVENTS, CO2_LIMITS_EVENT, co2_limits_handler, led_state_queue, NULL));
 
     // Give the device time to boot and then launch the console
     vTaskDelay(pdMS_TO_TICKS(1000));

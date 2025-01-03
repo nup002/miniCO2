@@ -59,6 +59,23 @@ void set_led_brightness(float brightness){
     ESP_ERROR_CHECK(esp_event_post(CONFIG_EVENTS, LED_BRIGHTNESS_EVENT, NULL, 0, portMAX_DELAY));
 }
 
+/* Set the CO2 LED limits in PPM. All limits must be set at the same time. Each limit must be greater than the previous. */
+void set_led_co2_limits(uint16_t medium_limit, uint16_t high_limit, uint16_t critical_limit){
+    if (high_limit > critical_limit){
+        high_limit = critical_limit;
+        ESP_LOGE(CONFIG_TAG, "CO2 high limit forced to critical limit %d", critical_limit);
+    }
+    if (medium_limit > high_limit){
+        medium_limit = high_limit;
+        ESP_LOGE(CONFIG_TAG, "CO2 medium limit forced to high limit %d", high_limit);
+    }
+    MINICO2CONFIG.led_cfg.limit_medium = medium_limit;
+    MINICO2CONFIG.led_cfg.limit_high = high_limit;
+    MINICO2CONFIG.led_cfg.limit_critical = critical_limit;
+    ESP_LOGI(CONFIG_TAG, "LED CO2 limit set to MEDIUM: %d PPM, HIGH: %d PPM, CRITICAL: %d PPM", 
+    MINICO2CONFIG.led_cfg.limit_medium, MINICO2CONFIG.led_cfg.limit_high, MINICO2CONFIG.led_cfg.limit_critical);
+    ESP_ERROR_CHECK(esp_event_post(CONFIG_EVENTS, CO2_LIMITS_EVENT, NULL, 0, portMAX_DELAY));
+}
 
 // Places the string representation of a minico2_cfg_s configuration struct into the buffer 'str'.
 void config_to_str(char *str, size_t len, struct minico2_cfg_s *config)
@@ -98,5 +115,7 @@ void reset_config(){
     set_print_sensor_readings(MINICO2CONFIG_DEFAULT.serial_print_enabled);
     set_nickname(&MINICO2CONFIG_DEFAULT.name);
     set_measurement_period(MINICO2CONFIG_DEFAULT.measurement_period);
-    set_led_brightness(MINICO2CONFIG_DEFAULT.led_cfg.brightness);
+    struct led_cfg_s led_cfg = MINICO2CONFIG_DEFAULT.led_cfg;
+    set_led_brightness(led_cfg.brightness);
+    set_led_co2_limits(led_cfg.limit_medium, led_cfg.limit_high, led_cfg.limit_critical);
 }
