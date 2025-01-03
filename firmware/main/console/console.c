@@ -154,17 +154,56 @@ static void register_set_period(void){
         .argtable = &set_period_args
     };
 
-    ESP_ERROR_CHECK( esp_console_cmd_register(&set_period_cmd) );
+    ESP_ERROR_CHECK(esp_console_cmd_register(&set_period_cmd) );
+}
+
+
+/** Arguments used by 'console_config' function */
+static struct {
+    struct arg_str *option;
+    struct arg_end *end;
+} config_args;
+
+static int console_config(int argc, char **argv)
+{
+    int nerrors = arg_parse(argc, argv, (void **) &config_args);
+    ESP_LOGI(CONSOLE_TAG, "config option count: %d", config_args.option->count);
+    if (config_args.option->count == 1){
+        const char *option = config_args.option->sval[0];
+        if (option != NULL && strcmp(option, "reset") == 0){
+            reset_config();
+        } else {
+            printf("Invalid config option '%s'", option);
+            return 1;
+        }
+    } else {
+        log_config(&MINICO2CONFIG);
+    }
+    return 0;
+}
+
+static void register_config(void){
+    config_args.option = arg_str0(NULL, NULL, "<reset>", "Reset the configuration to default values");
+    config_args.end = arg_end(1);
+
+    const esp_console_cmd_t console_config_cmd = {
+        .command = "config",
+        .help = "Print the current configuration as an INFO log statement or reset to the default configuration",
+        .hint = NULL,
+        .func = &console_config,
+        .argtable = &config_args
+    };
+
+    ESP_ERROR_CHECK(esp_console_cmd_register(&console_config_cmd) );
 }
 
 void start_console(void)
 {
     esp_console_repl_t *repl = NULL;
     esp_console_repl_config_t repl_config = ESP_CONSOLE_REPL_CONFIG_DEFAULT();
-    /* Prompt to be printed before each line.
-     * This can be customized, made dynamic, etc.
-     */
+
     repl_config.task_priority = 10;
+    repl_config.task_stack_size = 8096; // Extra large stack size for printing the config string
     repl_config.prompt = PROMPT_STR ">";
     repl_config.max_cmdline_length = 100;
 
@@ -175,6 +214,7 @@ void start_console(void)
     register_set_nickname();
     register_set_period();
     register_system_common();
+    register_config();
 
 #if defined(CONFIG_ESP_CONSOLE_USB_SERIAL_JTAG)
     esp_console_dev_usb_serial_jtag_config_t hw_config = ESP_CONSOLE_DEV_USB_SERIAL_JTAG_CONFIG_DEFAULT();

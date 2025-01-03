@@ -51,7 +51,7 @@ struct led_cfg_s {
 
 // MiniCO2 configuration struct
 struct minico2_cfg_s {
-  const char *name;             // User-defined nickname for easy identification
+  char name [128];       // User-defined nickname for easy identification
   uint16_t measurement_period;  // Number of seconds between each measurement. Any number less than 5 is forced to 5.
   bool serial_print_enabled;
   bool ble_enabled;

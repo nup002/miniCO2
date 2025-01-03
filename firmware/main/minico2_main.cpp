@@ -25,6 +25,7 @@
 #include "ble/ble.h"
 extern "C" {
 #include "zigbee/zigbee.h"
+#include "config/loadsave.h"
 }
 
 #ifndef APP_CPU_NUM
@@ -91,10 +92,13 @@ extern "C" {
 
 void app_main(void)
 {   
-    // Init the default event loop
+    boot();  //Print ESP32 chip info to the serial port.
+    
+    // Initialize the default event loop
     esp_event_loop_create_default();
 
-    boot();  //Print ESP32 chip info to the serial port.
+    // Initialize NVS and load the minico2 config
+    ESP_ERROR_CHECK(init_config_storage());
 
     // Init the queues
     struct SCD40measurement meas;

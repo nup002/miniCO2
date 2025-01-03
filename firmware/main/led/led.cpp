@@ -21,7 +21,7 @@ static int64_t time0 = 0;
 static led_strip_handle_t led;
 
 // Create a struct to hold the state of the LED
-struct RGBA led_clr = {0, 0, 0, (uint16_t)(255*MINICO2CONFIG.led_cfg.brightness)};
+struct RGBA led_clr = {0, 0, 0, 0};
 struct LED_VISUAL_STATE led_visual_state = {led_clr, STATIC, 1};
 
 
@@ -42,7 +42,8 @@ esp_err_t initiate_led(void)
         .mem_block_symbols = 0,
         .flags = {.with_dma = false},
     };
-    
+    led_visual_state.clr.a = 255*MINICO2CONFIG.led_cfg.brightness;
+
     ESP_LOGI(LED_TAG, "1/2 - Creating new led_strip_handle_t object");
     ESP_RETURN_ON_ERROR(led_strip_new_rmt_device(&strip_config, &rmt_config, &led), LED_TAG, "LED initialization failed");
 
@@ -53,6 +54,7 @@ esp_err_t initiate_led(void)
     return ESP_OK;
 }
 
+// Sets the color of the LED from an RGBA struct.
 void set_led_from_RGBA(struct RGBA clr){
     float a_f = clr.a / 255.0;
     ESP_ERROR_CHECK(led_strip_set_pixel(led, 0, clr.r * a_f, clr.g * a_f, clr.b * a_f));
@@ -105,6 +107,7 @@ void progress_led_pulse(struct LED_VISUAL_STATE state){
     set_led_from_RGBA(new_clr);
 }
 
+// Calls an update of the LED. The LED is set to the current value of the 'led_visual_state' struct.
 void update_led(){
     if (led_visual_state.mode == STATIC) {
         set_led_from_RGBA(led_visual_state.clr);
@@ -113,11 +116,11 @@ void update_led(){
     }
 }
 
+// Updates the LED when the LED brightness setting changes.
 static void led_brightness_handler(void* handler_args, esp_event_base_t base, int32_t id, void* event_data)
 {
     ESP_LOGD(LED_TAG, "led_brightness_handler received event");
     led_visual_state.clr.a = 255*MINICO2CONFIG.led_cfg.brightness;
-    update_led();
 }
 
 void led_task(void *pvParameters)
@@ -148,8 +151,7 @@ void led_task(void *pvParameters)
     }
 
     // Register the event handlers
-    esp_err_t err = esp_event_handler_instance_register(CONFIG_EVENTS, LED_BRIGHTNESS_EVENT, led_brightness_handler, NULL, NULL);
-    ESP_LOGI(LED_TAG, "Handler registration result: %s", esp_err_to_name(err));
+    ESP_ERROR_CHECK(esp_event_handler_instance_register(CONFIG_EVENTS, LED_BRIGHTNESS_EVENT, led_brightness_handler, NULL, NULL));
 
     enum LED_STATES state;
     while (1){

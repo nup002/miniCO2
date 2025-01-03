@@ -3,11 +3,16 @@
 
 #include <esp_event.h>
 #include <stdbool.h>
+#include "../types.h"
 
 void set_print_sensor_readings(bool enabled);
-void set_nickname(const char *nickname);
+void set_nickname(char *nickname);
 void set_measurement_period(int period);
 void set_led_brightness(float brightness);
+
+void config_to_str(char *str, size_t len, struct minico2_cfg_s *config);
+void log_config(struct minico2_cfg_s *config);
+void reset_config();
 
 ESP_EVENT_DECLARE_BASE(CONFIG_EVENTS);  // Declaration of the config events family
 
