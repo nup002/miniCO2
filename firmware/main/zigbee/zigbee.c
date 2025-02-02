@@ -115,6 +115,8 @@ void esp_zb_app_signal_handler(esp_zb_app_signal_t *signal_struct)
     }
 }
 
+
+
 /* Create the clusters for the Home Assistant endpoint */
 static esp_zb_cluster_list_t *custom_minico2_clusters_create(esp_zb_minico2_cfg_t *minico2_sensor)
 {
@@ -140,6 +142,10 @@ static esp_zb_cluster_list_t *custom_minico2_clusters_create(esp_zb_minico2_cfg_
     ESP_ERROR_CHECK(esp_zb_cluster_list_add_temperature_meas_cluster(cluster_list, esp_zb_temperature_meas_cluster_create(&(minico2_sensor->temp_meas_cfg)), ESP_ZB_ZCL_CLUSTER_SERVER_ROLE));
     ESP_ERROR_CHECK(esp_zb_cluster_list_add_humidity_meas_cluster(cluster_list, esp_zb_humidity_meas_cluster_create(&(minico2_sensor->hum_meas_cfg)), ESP_ZB_ZCL_CLUSTER_SERVER_ROLE));
     ESP_ERROR_CHECK(esp_zb_cluster_list_add_carbon_dioxide_measurement_cluster(cluster_list, esp_zb_carbon_dioxide_measurement_cluster_create(&(minico2_sensor->co2_meas_cfg)), ESP_ZB_ZCL_CLUSTER_SERVER_ROLE));
+
+    /* Add the LED configuration clusters to the cluster list */
+    ESP_ERROR_CHECK(esp_zb_cluster_list_add_on_off_cluster(cluster_list, esp_zb_on_off_cluster_create(&(minico2_sensor->led_on_off_cfg)), ESP_ZB_ZCL_CLUSTER_SERVER_ROLE));
+    ESP_ERROR_CHECK(esp_zb_cluster_list_add_level_cluster(cluster_list, esp_zb_level_cluster_create(&(minico2_sensor->led_brightness_cfg)), ESP_ZB_ZCL_CLUSTER_SERVER_ROLE));
 
     return cluster_list;
 }

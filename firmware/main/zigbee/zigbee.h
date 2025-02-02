@@ -57,6 +57,8 @@ typedef struct esp_zb_minico2_cfg_s {
     esp_zb_temperature_meas_cluster_cfg_t temp_meas_cfg;            /*!<  Temperature measurement cluster configuration, @ref esp_zb_temperature_meas_cluster_cfg_s */
     esp_zb_humidity_meas_cluster_cfg_t hum_meas_cfg;                /*!<  Humidity measurement cluster configuration, @ref esp_zb_humidity_meas_cluster_cfg_s */
     esp_zb_carbon_dioxide_measurement_cluster_cfg_t co2_meas_cfg;   /*!<  Carbon dioxide measurement cluster configuration, @ref esp_zb_carbon_dioxide_measurement_cluster_cfg_s */
+    esp_zb_on_off_cluster_cfg_t led_on_off_cfg;                     /*!<  LED on/off cluster configuration */
+    esp_zb_level_cluster_cfg_t led_brightness_cfg;                  /*!<  LED brightness cluster configuration */
 } esp_zb_minico2_cfg_t;
 
 
@@ -92,6 +94,14 @@ typedef struct esp_zb_minico2_cfg_s {
                 .measured_value = ESP_ZB_ZCL_CARBON_DIOXIDE_MEASUREMENT_MEASURED_VALUE_DEFAULT,     \
                 .min_measured_value = ESP_ZB_ZCL_CARBON_DIOXIDE_MEASUREMENT_MIN_MEASURED_VALUE_DEFAULT,      \
                 .max_measured_value = ESP_ZB_ZCL_CARBON_DIOXIDE_MEASUREMENT_MIN_MEASURED_VALUE_DEFAULT,      \
-            },                                                                                      \
+            },                                                                                          \
+        .led_on_off_cfg =                                                                           \
+            {                                                                                           \
+                .on_off = true                                                                          \
+            },                                                                                          \
+        .led_brightness_cfg =                                                                           \
+            {                                                                                           \
+                .current_level = 50                                                                     \
+            }                                                                                           \                                                                                       \
     }
 #endif

@@ -81,7 +81,7 @@ void set_led_co2_limits(uint16_t medium_limit, uint16_t high_limit, uint16_t cri
 void config_to_str(char *str, size_t len, struct minico2_cfg_s *config)
 {
     snprintf(str, len,
-    "Nickname                 : '%s'\n"
+    "Nickname                 : %s\n"
     "Measurement period       : %d seconds\n"
     "Print measurements       : %s\n"
     "BLE                      : %s\n"
@@ -102,7 +102,7 @@ void config_to_str(char *str, size_t len, struct minico2_cfg_s *config)
     );
 }
 
-// Logs 'config' to the serial port
+// Logs the configuration struct 'config' to the serial port
 void log_config(struct minico2_cfg_s *config)
 {
     char config_str [1024] = "";
