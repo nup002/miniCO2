@@ -1,0 +1,143 @@
+(footprint "L_Murata_LQH3NPZ"
+	(version 20240108)
+	(generator "pcbnew")
+	(generator_version "8.0")
+	(layer "F.Cu")
+	(descr "https://www.lcsc.com/datasheet/lcsc_datasheet_2410121504_Murata-Electronics-LQH3NPZ3R3MMEL_C237449.pdf")
+	(tags "Inductor")
+	(property "Reference" "REF**"
+		(at -1 -2.35 0)
+		(layer "F.SilkS")
+		(uuid "deff9f62-ea8a-462f-a6f0-f1825d2c7698")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Value" "L_Murata_LQH3NPZ"
+		(at -2.925 -4.3 0)
+		(layer "F.Fab")
+		(uuid "c40220e8-7bfe-40e5-a8e0-4b0ca27bdfe2")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Footprint" ""
+		(at 0 0 0)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "0a9dfabe-5747-4fc3-9ce3-0f67d2dc0ff6")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Datasheet" ""
+		(at 0 0 0)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "e44365c9-867e-4fa7-ad18-35a230d9c8e0")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Description" ""
+		(at 0 0 0)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "53e93693-4117-4f62-a927-d24167f63de4")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.15)
+			)
+		)
+	)
+	(attr smd)
+	(fp_line
+		(start -1.285 -1.45)
+		(end 1.235 -1.45)
+		(stroke
+			(width 0.12)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "b32c4879-dbad-4235-9602-a6e12785efa3")
+	)
+	(fp_line
+		(start -1.235 1.45)
+		(end 1.285 1.45)
+		(stroke
+			(width 0.12)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "171b4b84-d8d7-4fc7-af98-ef6153fcbb83")
+	)
+	(fp_rect
+		(start -2 -2)
+		(end 2 2)
+		(stroke
+			(width 0.1)
+			(type default)
+		)
+		(fill none)
+		(layer "F.CrtYd")
+		(uuid "01145cb8-fb1a-4501-be3b-e2b83683cc4a")
+	)
+	(fp_rect
+		(start -1.5 -1.5)
+		(end 1.5 1.5)
+		(stroke
+			(width 0.1)
+			(type default)
+		)
+		(fill none)
+		(layer "F.Fab")
+		(uuid "ff4ab672-7c2c-4da2-afcb-f54a9cd6baf0")
+	)
+	(fp_text user "${REFERENCE}"
+		(at 4.825 -1.65 180)
+		(layer "F.Fab")
+		(uuid "65682bbb-dd49-4c08-bf9e-919cccdc163d")
+		(effects
+			(font
+				(size 0.5 0.5)
+				(thickness 0.075)
+			)
+		)
+	)
+	(pad "1" smd rect
+		(at -1.1 0)
+		(size 0.8 2.7)
+		(layers "F.Cu" "F.Paste" "F.Mask")
+		(uuid "ec0c501a-249b-4137-a8f8-4b7d92aa4678")
+	)
+	(pad "2" smd rect
+		(at 1.1 0)
+		(size 0.8 2.7)
+		(layers "F.Cu" "F.Paste" "F.Mask")
+		(uuid "a592e4b0-fe8a-4e62-8295-785320879cbd")
+	)
+	(model "${KICAD8_3DMODEL_DIR}/Inductor_SMD.3dshapes/L_Murata_DFE201610P.wrl"
+		(offset
+			(xyz 0 0 0)
+		)
+		(scale
+			(xyz 1 1 1)
+		)
+		(rotate
+			(xyz 0 0 0)
+		)
+	)
+)

@@ -38,8 +38,8 @@
         "other_text_upright": false,
         "pads": {
           "drill": 0.0,
-          "height": 1.0,
-          "width": 0.42
+          "height": 3.0,
+          "width": 1.5
         },
         "silk_line_width": 0.15,
         "silk_text_italic": false,
@@ -59,7 +59,9 @@
           "width": 0.0
         }
       ],
-      "drc_exclusions": [],
+      "drc_exclusions": [
+        "items_not_allowed|145671900|115131262|b8153b8a-a66e-4e2f-860a-056628040ea8|00000000-0000-0000-0000-000000000000"
+      ],
       "meta": {
         "version": 2
       },
@@ -122,7 +124,7 @@
         "max_error": 0.005,
         "min_clearance": 0.15,
         "min_connection": 0.0,
-        "min_copper_edge_clearance": 0.29,
+        "min_copper_edge_clearance": 0.2,
         "min_hole_clearance": 0.25,
         "min_hole_to_hole": 0.2,
         "min_microvia_diameter": 0.2,
@@ -187,7 +189,8 @@
         0.0,
         0.2,
         0.3,
-        0.5
+        0.5,
+        1.0
       ],
       "tuning_pattern_settings": {
         "diff_pair_defaults": {
@@ -497,6 +500,23 @@
         "via_diameter": 0.8,
         "via_drill": 0.4,
         "wire_width": 6
+      },
+      {
+        "bus_width": 12,
+        "clearance": 0.2,
+        "diff_pair_gap": 0.2,
+        "diff_pair_via_gap": 0.25,
+        "diff_pair_width": 0.2918,
+        "line_style": 0,
+        "microvia_diameter": 0.3,
+        "microvia_drill": 0.1,
+        "name": "USB",
+        "pcb_color": "rgba(0, 0, 0, 0.000)",
+        "schematic_color": "rgba(0, 0, 0, 0.000)",
+        "track_width": 0.177,
+        "via_diameter": 0.45,
+        "via_drill": 0.3,
+        "wire_width": 6
       }
     ],
     "meta": {
@@ -516,6 +536,14 @@
       {
         "netclass": "Power",
         "pattern": "+3.3V"
+      },
+      {
+        "netclass": "USB",
+        "pattern": "D+"
+      },
+      {
+        "netclass": "USB",
+        "pattern": "D-"
       }
     ]
   },
@@ -609,6 +637,36 @@
           "label": "Temp range",
           "name": "Temp range",
           "show": false
+        },
+        {
+          "group_by": false,
+          "label": "MPN ",
+          "name": "MPN ",
+          "show": false
+        },
+        {
+          "group_by": false,
+          "label": "Sim.Device",
+          "name": "Sim.Device",
+          "show": false
+        },
+        {
+          "group_by": false,
+          "label": "Sim.Pins",
+          "name": "Sim.Pins",
+          "show": false
+        },
+        {
+          "group_by": false,
+          "label": "LCSC",
+          "name": "LCSC",
+          "show": true
+        },
+        {
+          "group_by": false,
+          "label": "JLCPCB_CORRECTION",
+          "name": "JLCPCB_CORRECTION",
+          "show": false
         }
       ],
       "filter_string": "",
@@ -670,6 +728,14 @@
     [
       "4716ccc0-88a0-4c42-87c9-ed1e02729e90",
       "Root"
+    ],
+    [
+      "03971f06-80f4-45fd-a837-c09f1f921de9",
+      "Input and power"
+    ],
+    [
+      "d284f4aa-fb8e-4685-86cf-dd1fcb3cffec",
+      "Display"
     ]
   ],
   "text_variables": {}
