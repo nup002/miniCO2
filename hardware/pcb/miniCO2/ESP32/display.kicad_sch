@@ -2235,16 +2235,6 @@
 		)
 		(uuid "fad7c3df-aaa0-4194-b6d8-04e8c79b6c4f")
 	)
-	(text "1uF under bias"
-		(exclude_from_sim no)
-		(at 138.938 60.198 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-		)
-		(uuid "c779dd12-ab56-44c3-a8d3-fe904c635f4e")
-	)
 	(global_label "GDR"
 		(shape input)
 		(at 92.71 50.8 180)
@@ -2894,7 +2884,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part #" "C295786"
+		(property "LCSC Part #" "C473450"
 			(at 140.97 96.52 0)
 			(effects
 				(font
@@ -2937,7 +2927,7 @@
 				(justify right)
 			)
 		)
-		(property "Value" "2.2uF"
+		(property "Value" "2.2uF/10V"
 			(at 118.11 123.19 0)
 			(effects
 				(font
@@ -2973,7 +2963,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part #" "C386031"
+		(property "LCSC Part #" "C335106"
 			(at 114.3 121.92 0)
 			(effects
 				(font
@@ -3061,7 +3051,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part #" "C473517"
+		(property "LCSC Part #" "C270323"
 			(at 148.59 96.52 0)
 			(effects
 				(font
@@ -3104,7 +3094,7 @@
 				(justify right)
 			)
 		)
-		(property "Value" "2.2uF"
+		(property "Value" "2.2uF/10V"
 			(at 106.68 123.19 0)
 			(effects
 				(font
@@ -3140,7 +3130,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part #" "C386031"
+		(property "LCSC Part #" "C335106"
 			(at 102.87 121.92 0)
 			(effects
 				(font
@@ -3268,7 +3258,7 @@
 				)
 			)
 		)
-		(property "Value" "Conn_01x18"
+		(property "Value" "FPC 18POS 0.5mm"
 			(at 97.79 97.79 0)
 			(effects
 				(font
@@ -3295,6 +3285,15 @@
 			)
 		)
 		(property "Description" "Generic connector, single row, 01x18, script generated (kicad-library-utils/schlib/autogen/connector/)"
+			(at 97.79 71.12 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC Part #" "C397324"
 			(at 97.79 71.12 0)
 			(effects
 				(font
@@ -3385,7 +3384,7 @@
 				(justify right)
 			)
 		)
-		(property "Value" "2.2uF"
+		(property "Value" "2.2uF/10V"
 			(at 80.01 123.19 0)
 			(effects
 				(font
@@ -3421,7 +3420,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part #" "C386031"
+		(property "LCSC Part #" "C335106"
 			(at 76.2 121.92 0)
 			(effects
 				(font
@@ -3538,7 +3537,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "100n"
+		(property "Value" "100n/25V"
 			(at 130.81 124.46 0)
 			(effects
 				(font
@@ -3592,7 +3591,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" "C1525"
+		(property "LCSC" ""
 			(at 130.81 121.92 0)
 			(effects
 				(font
@@ -3601,7 +3600,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part #" "C76934"
+		(property "LCSC Part #" "C181047"
 			(at 130.81 121.92 0)
 			(effects
 				(font
@@ -3644,7 +3643,7 @@
 				(justify right)
 			)
 		)
-		(property "Value" "2.2uF"
+		(property "Value" "2.2uF/10V"
 			(at 93.98 123.19 0)
 			(effects
 				(font
@@ -3680,7 +3679,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part #" "C386031"
+		(property "LCSC Part #" "C335106"
 			(at 90.17 121.92 0)
 			(effects
 				(font
@@ -3798,7 +3797,7 @@
 			)
 		)
 		(property "Value" "Si1308EDL"
-			(at 204.978 90.424 0)
+			(at 149.352 83.058 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3881,7 +3880,7 @@
 			)
 		)
 		(property "Value" "NSR05F30NXT5G"
-			(at 204.216 71.374 0)
+			(at 158.75 71.628 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4041,7 +4040,7 @@
 				(justify right)
 			)
 		)
-		(property "Value" "4.7uF/25V"
+		(property "Value" "4.7uF/35V"
 			(at 135.382 66.04 0)
 			(effects
 				(font
@@ -4077,7 +4076,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part #" "C69335"
+		(property "LCSC Part #" "C162274"
 			(at 148.59 64.77 0)
 			(effects
 				(font
@@ -4185,7 +4184,7 @@
 			)
 		)
 		(property "Value" "NSR05F30NXT5G"
-			(at 207.01 63.246 0)
+			(at 160.02 60.198 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4280,7 +4279,7 @@
 				(justify right)
 			)
 		)
-		(property "Value" "1uF/25V"
+		(property "Value" "1uF/50V"
 			(at 170.18 81.28 0)
 			(effects
 				(font
@@ -4316,7 +4315,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part #" "C5673"
+		(property "LCSC Part #" "C342951"
 			(at 166.37 80.01 0)
 			(effects
 				(font
@@ -4367,7 +4366,7 @@
 			)
 		)
 		(property "Value" "NSR05F30NXT5G"
-			(at 205.74 56.642 0)
+			(at 160.02 52.578 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4462,7 +4461,7 @@
 				(justify right)
 			)
 		)
-		(property "Value" "1uF/25V"
+		(property "Value" "1uF/50V"
 			(at 173.99 62.23 0)
 			(effects
 				(font
@@ -4498,7 +4497,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part #" "C5673"
+		(property "LCSC Part #" "C342951"
 			(at 170.18 60.96 0)
 			(effects
 				(font
@@ -4550,7 +4549,7 @@
 				(justify right)
 			)
 		)
-		(property "Value" "2.2uF"
+		(property "Value" "2.2uF/10V"
 			(at 67.31 123.19 0)
 			(effects
 				(font
@@ -4586,7 +4585,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part #" "C386031"
+		(property "LCSC Part #" "C335106"
 			(at 63.5 121.92 0)
 			(effects
 				(font
@@ -4835,7 +4834,7 @@
 				(justify right)
 			)
 		)
-		(property "Value" "4.7uF/25V"
+		(property "Value" "4.7uF/35V"
 			(at 115.062 81.28 0)
 			(effects
 				(font
@@ -4871,7 +4870,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part #" "C69335"
+		(property "LCSC Part #" "C162274"
 			(at 128.27 80.01 0)
 			(effects
 				(font

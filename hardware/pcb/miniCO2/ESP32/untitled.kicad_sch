@@ -773,151 +773,6 @@
 				)
 			)
 		)
-		(symbol "Device:D_Schottky"
-			(pin_numbers hide)
-			(pin_names
-				(offset 1.016) hide)
-			(exclude_from_sim no)
-			(in_bom yes)
-			(on_board yes)
-			(property "Reference" "D"
-				(at 0 2.54 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Value" "D_Schottky"
-				(at 0 -2.54 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Footprint" ""
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Datasheet" "~"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Description" "Schottky diode"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "ki_keywords" "diode Schottky"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "ki_fp_filters" "TO-???* *_Diode_* *SingleDiode* D_*"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(symbol "D_Schottky_0_1"
-				(polyline
-					(pts
-						(xy 1.27 0) (xy -1.27 0)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 1.27 1.27) (xy 1.27 -1.27) (xy -1.27 0) (xy 1.27 1.27)
-					)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy -1.905 0.635) (xy -1.905 1.27) (xy -1.27 1.27) (xy -1.27 -1.27) (xy -0.635 -1.27) (xy -0.635 -0.635)
-					)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-			)
-			(symbol "D_Schottky_1_1"
-				(pin passive line
-					(at -3.81 0 0)
-					(length 2.54)
-					(name "K"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 3.81 0 180)
-					(length 2.54)
-					(name "A"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-			)
-		)
 		(symbol "Device:FerriteBead_Small"
 			(pin_numbers hide)
 			(pin_names
@@ -3535,16 +3390,6 @@
 	)
 	(wire
 		(pts
-			(xy 151.13 31.75) (xy 157.48 31.75)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "452b6572-adfd-43a2-a632-c2842b5d070a")
-	)
-	(wire
-		(pts
 			(xy 157.48 31.75) (xy 157.48 33.02)
 		)
 		(stroke
@@ -3755,7 +3600,7 @@
 	)
 	(wire
 		(pts
-			(xy 139.7 31.75) (xy 143.51 31.75)
+			(xy 139.7 31.75) (xy 157.48 31.75)
 		)
 		(stroke
 			(width 0)
@@ -4535,7 +4380,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "10n"
+		(property "Value" "10n/50V"
 			(at 132.08 36.322 0)
 			(effects
 				(font
@@ -4598,7 +4443,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part #" "C282517"
+		(property "LCSC Part #" "C57112"
 			(at 129.54 35.56 0)
 			(effects
 				(font
@@ -4729,8 +4574,8 @@
 				(justify right)
 			)
 		)
-		(property "Value" "ESD9B5.0ST5G"
-			(at 103.378 58.928 90)
+		(property "Value" "ESD9L5.0ST5G-ES"
+			(at 107.696 38.608 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4747,7 +4592,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "https://www.onsemi.com/pub/Collateral/ESD9B-D.PDF"
+		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2412061751_ElecSuper-ESD9L5-0ST5G-ES_C5199180.pdf"
 			(at 123.19 35.56 0)
 			(effects
 				(font
@@ -4756,7 +4601,7 @@
 				(hide yes)
 			)
 		)
-		(property "Description" "ESD protection diode, 5.0Vrwm, SOD-923"
+		(property "Description" "ESD protection diode, 6.0V, SOD-923"
 			(at 123.19 35.56 0)
 			(effects
 				(font
@@ -4765,7 +4610,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part #" "C3008065"
+		(property "LCSC Part #" "C5199180"
 			(at 123.19 35.56 0)
 			(effects
 				(font
@@ -4816,7 +4661,7 @@
 			)
 		)
 		(property "Value" "6V 750mA 40A 1.5A"
-			(at 126.746 18.034 90)
+			(at 117.094 28.194 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4893,7 +4738,7 @@
 				(justify right)
 			)
 		)
-		(property "Value" "22uF"
+		(property "Value" "22uF/25V"
 			(at 88.646 116.586 0)
 			(effects
 				(font
@@ -4929,7 +4774,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part #" "C86816"
+		(property "LCSC Part #" "C6119899"
 			(at 81.28 115.57 0)
 			(effects
 				(font
@@ -5016,7 +4861,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part #" "C274341"
+		(property "LCSC Part #" "C270344"
 			(at 40.64 105.41 0)
 			(effects
 				(font
@@ -5259,7 +5104,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part #" "C163457"
+		(property "LCSC Part #" "C25908"
 			(at 74.93 123.19 0)
 			(effects
 				(font
@@ -5741,7 +5586,7 @@
 		(exclude_from_sim yes)
 		(in_bom no)
 		(on_board yes)
-		(dnp no)
+		(dnp yes)
 		(fields_autoplaced yes)
 		(uuid "67bb53c7-71f9-4b3e-831e-f1f426ce555b")
 		(property "Reference" "H2"
@@ -5838,7 +5683,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2410121310_XINGLIGHT-XL-1005UOC_C965791.pdf"
+		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2111161030_ROHM-Semicon-SML-P11UTT86R_C510300.pdf"
 			(at 40.64 113.03 0)
 			(effects
 				(font
@@ -5856,7 +5701,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part #" "C965791"
+		(property "LCSC Part #" "C510300"
 			(at 40.64 113.03 90)
 			(effects
 				(font
@@ -5956,7 +5801,7 @@
 		(dnp no)
 		(uuid "70530ee1-5ebe-4ecf-9b66-5b6312aa7b7a")
 		(property "Reference" "C3"
-			(at 153.162 35.56 0)
+			(at 163.068 35.56 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5964,8 +5809,8 @@
 				(justify right)
 			)
 		)
-		(property "Value" "22uF"
-			(at 153.924 37.846 0)
+		(property "Value" "22uF/25V"
+			(at 169.672 37.592 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6000,7 +5845,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part #" "C86816"
+		(property "LCSC Part #" "C6119899"
 			(at 157.48 36.83 0)
 			(effects
 				(font
@@ -6040,7 +5885,7 @@
 		(exclude_from_sim yes)
 		(in_bom no)
 		(on_board yes)
-		(dnp no)
+		(dnp yes)
 		(fields_autoplaced yes)
 		(uuid "72c8e1c3-c252-4056-9a79-f2da9a1889f4")
 		(property "Reference" "H1"
@@ -6205,7 +6050,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "100n"
+		(property "Value" "100n/25V"
 			(at 142.748 37.338 0)
 			(effects
 				(font
@@ -6259,7 +6104,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" "C1525"
+		(property "LCSC" ""
 			(at 139.7 35.56 0)
 			(effects
 				(font
@@ -6268,7 +6113,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part #" "C76934"
+		(property "LCSC Part #" "C181047"
 			(at 139.7 35.56 0)
 			(effects
 				(font
@@ -6464,7 +6309,7 @@
 				(justify right)
 			)
 		)
-		(property "Value" "22uF"
+		(property "Value" "22uF/25V"
 			(at 184.404 105.156 0)
 			(effects
 				(font
@@ -6500,7 +6345,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part #" "C86816"
+		(property "LCSC Part #" "C6119899"
 			(at 187.96 104.14 0)
 			(effects
 				(font
@@ -6552,7 +6397,7 @@
 				(justify right)
 			)
 		)
-		(property "Value" "22uF"
+		(property "Value" "22uF/25V"
 			(at 235.712 105.664 0)
 			(effects
 				(font
@@ -6588,7 +6433,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part #" "C86816"
+		(property "LCSC Part #" "C6119899"
 			(at 227.33 104.14 0)
 			(effects
 				(font
@@ -6638,8 +6483,8 @@
 				)
 			)
 		)
-		(property "Value" "BLM15PX471SN1D"
-			(at 155.448 19.558 90)
+		(property "Value" "TDK MPZ1005S121CT000"
+			(at 136.144 26.67 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6655,7 +6500,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_1912111437_Murata-Electronics-BLM15PX471SN1D_C333978.pdf"
+		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2412191506_TDK-MPZ1005S121CT000_C107331.pdf"
 			(at 135.89 31.75 0)
 			(effects
 				(font
@@ -6673,16 +6518,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" ""
-			(at 135.89 31.75 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LCSC Part #" "C333978"
+		(property "LCSC Part #" "C107331"
 			(at 135.89 31.75 0)
 			(effects
 				(font
@@ -6826,7 +6662,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part #" "C274341"
+		(property "LCSC Part #" "C270344"
 			(at 80.01 44.45 0)
 			(effects
 				(font
@@ -6919,109 +6755,6 @@
 			(project "miniCO2"
 				(path "/4716ccc0-88a0-4c42-87c9-ed1e02729e90/03971f06-80f4-45fd-a837-c09f1f921de9"
 					(reference "#PWR032")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:D_Schottky")
-		(at 147.32 31.75 180)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "c9f351cd-c30b-4d5f-97d0-16af27798c92")
-		(property "Reference" "D5"
-			(at 147.32 28.575 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "CUS10S30,H3F"
-			(at 173.736 16.51 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Diode_SMD:D_SOD-323"
-			(at 147.32 31.75 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2410121958_TOSHIBA-CUS10S30-H3F_C146335.pdf"
-			(at 147.32 31.75 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 147.32 31.75 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "MPN " "CUS10S30,H3F"
-			(at 147.32 31.75 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "JLCPCB_CORRECTION" ""
-			(at 147.32 31.75 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LCSC" ""
-			(at 147.32 31.75 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LCSC Part #" "C146335"
-			(at 147.32 31.75 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "8d2e2aee-73ca-4899-9cb2-1cc3d2eb59d7")
-		)
-		(pin "2"
-			(uuid "e3915811-00f6-4d43-88f1-1f1daa5c4de0")
-		)
-		(instances
-			(project "miniCO2"
-				(path "/4716ccc0-88a0-4c42-87c9-ed1e02729e90/03971f06-80f4-45fd-a837-c09f1f921de9"
-					(reference "D5")
 					(unit 1)
 				)
 			)
@@ -7397,7 +7130,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC Part #" "C274341"
+		(property "LCSC Part #" "C270344"
 			(at 72.39 44.45 0)
 			(effects
 				(font
