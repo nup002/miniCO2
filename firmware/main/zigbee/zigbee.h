@@ -102,6 +102,6 @@ typedef struct esp_zb_minico2_cfg_s {
         .led_brightness_cfg =                                                                           \
             {                                                                                           \
                 .current_level = 50                                                                     \
-            }                                                                                           \                                                                                       \
+            }                                                                                           \
     }
 #endif
