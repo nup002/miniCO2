@@ -70,11 +70,12 @@ void app_main(void)
 
    // Test Epd class
    display.init(true);
+   display.initFullUpdate();
    display.setFont(&FreeMono9pt7b);
-   display.fillCircle(display.width()/2,display.height()/2,30,EPD_BLACK);
+   display.fillScreen(EPD_BLACK);
    display.update();
-   printf("Fillcircle finished");
-   
+   printf("fillscreen finished");
+   return;
    uint8_t radius = 8;
    
    for (auto y = 0; y<40; y+=2) {
